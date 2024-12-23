@@ -1,0 +1,89 @@
+/* ========================================================== */
+/* Slider from stackoverflow; copied just the HTML element */
+/* https://stackoverflow.com/questions/4753946/html-slider-with-two-inputs-possible */
+section.range-slider {
+  position: relative;
+  width: 200px;
+  height: 35px;
+  text-align: center;
+}
+
+section.range-slider input {
+  pointer-events: none;
+  position: absolute;
+  overflow: hidden;
+  left: 0;
+  top: 15px;
+  width: 200px;
+  outline: none;
+  height: 18px;
+  margin: 0;
+  padding: 0;
+}
+
+section.range-slider input::-webkit-slider-thumb {
+  pointer-events: all;
+  position: relative;
+  z-index: 1;
+  outline: 0;
+}
+
+section.range-slider input::-moz-range-thumb {
+  pointer-events: all;
+  position: relative;
+  z-index: 10;
+  -moz-appearance: none;
+  width: 9px;
+}
+
+section.range-slider input::-moz-range-track {
+  position: relative;
+  z-index: -1;
+  background-color: rgba(0, 0, 0, 1);
+  border: 0;
+}
+section.range-slider input:last-of-type::-moz-range-track {
+  -moz-appearance: none;
+  background: none transparent;
+  border: 0;
+}
+section.range-slider input[type=range]::-moz-focus-outer {
+border: 0;
+}
+/* ========================================================== */
+
+body {
+  margin: 0;
+  overflow: hidden;
+}
+.tooltip {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 4px;
+  font-size: 12px;
+  pointer-events: none;
+  visibility: hidden;
+}
+#filters {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+#title {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}

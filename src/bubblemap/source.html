@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bubble Map: Paintings Distributed Over Cities</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="map"></div>
+  <div class="tooltip" id="tooltip"></div>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://d3js.org/topojson.v3.min.js"></script>
+  <div id="title">
+    <h1>Paintings Distributed Over Cities</h1>
+    <p>Hover over a bubble to see the paintings distributed over cities.</p>
+  </div>
+  <div id="filters">
+    <label for="year-range">Year Range:</label>
+    <!-- Slider from stackoverflow; copied just the HTML element
+    https://stackoverflow.com/questions/4753946/html-slider-with-two-inputs-possible -->
+    <section id="year-range" class="range-slider">
+      <span class="rangeValues"></span>
+      <input id="year-lower" value="1905" min="1905" max="1910" step="1" type="range">
+      <input id="year-upper" value="1910" min="1905" max="1910" step="1" type="range">
+    </section>
+    <!-- ======================================================================================== -->
+  
+    <div>
+      <label>
+        <input type="checkbox" id="male-filter" checked>
+        Male Artists
+      </label>
+      <label>
+        <input type="checkbox" id="female-filter" checked>
+        Female Artists
+      </label>
+    </div>
+  </div>
+  <script src="script.js"></script>
+
+  <!-- <svg id="bubble-map"></svg> -->
+</body>
+</html>
