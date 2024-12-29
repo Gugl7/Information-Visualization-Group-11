@@ -5,44 +5,52 @@ body {
 }
 
 #title {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 15px;
+  border-bottom: 1px solid #ccc;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-#filters {
-  position: fixed;
-  bottom: 10px;
-  left: 10px;
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
-}
-
-.range-slider {
-  width: 200px;
-  display: inline-block;
-  margin-top: 5px;
-}
-
-#year-display {
-  font-size: 16px;
-  font-weight: bold;
-  margin-left: 10px;
-  color: #333;
+#content {
+  display: flex;
+  margin-top: 20px;
+  justify-content: space-between;
+  padding: 20px;
 }
 
 #chart {
-  margin-top: 100px;
-  width: 100%;
+  flex-grow: 1;
+  min-width: 600px;
   height: 400px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#filters {
+  margin-left: 20px;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+#filters label {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  display: block;
+}
+
+#gender-select {
+  width: 150px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  background-color: #fff;
 }
 
 .tooltip {
@@ -55,3 +63,4 @@ body {
   pointer-events: none;
   visibility: hidden;
 }
+

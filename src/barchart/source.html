@@ -12,23 +12,20 @@
     <p>Hover over the bars to see the number of exhibitions for male and female artists.</p>
   </div>
 
-  <div id="filters">
-    <!-- Jahrenslider -->
-    <label for="year-slider">Select Year:</label>
-    <input id="year-slider" type="range" min="1905" max="1910" step="1" value="1905">
-    <span id="year-display">1905</span>
-    <br><br>
+  <div id="content">
+    <!-- Diagramm -->
+    <div id="chart"></div>
 
-    <!-- Dropdown-Menü für den Geschlechtsfilter -->
-    <label for="gender-select">Select Gender:</label>
-    <select id="gender-select">
-      <option value="both">Both</option>
-      <option value="M">Male</option>
-      <option value="F">Female</option>
-    </select>
+    <!-- Geschlechtsfilter -->
+    <div id="filters">
+      <label for="gender-select">Select Gender:</label>
+      <select id="gender-select">
+        <option value="both">Both</option>
+        <option value="M">Male</option>
+        <option value="F">Female</option>
+      </select>
+    </div>
   </div>
-
-  <div id="chart"></div>
 
   <!-- D3.js Bibliothek -->
   <script src="https://d3js.org/d3.v7.min.js"></script>
