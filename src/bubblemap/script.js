@@ -147,7 +147,7 @@ function updateVisualization() {
         .attr("cx", cx)
         .attr("cy", cy)
         .attr("r", totalRadius * femaleRatio * scale / zoomLevel)
-        .attr("fill", "red")
+        .attr("fill", "#f1a7c1")
         .attr("stroke-width", 1);
 
       group.on("mouseover", (event, d) => {
