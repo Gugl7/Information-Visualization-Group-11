@@ -1,0 +1,414 @@
+/* ==================== Reset Styles ==================== */
+html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: var(--theme-background);
+    color: var(--theme-foreground)
+}
+
+body {
+    font: 17px/1.5 var(--serif);
+    max-width: var(--observablehq-max-width);
+    margin: auto;
+}
+
+#observablehq-header {
+    position: fixed;
+    top: 0;
+    left: calc(max(0rem, (100vw - var(--observablehq-max-width)) / 2) + var(--observablehq-inset-left) + 2rem);
+    right: calc(max(0rem, (100vw - var(--observablehq-max-width)) / 2) + var(--observablehq-inset-right) + 2rem);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    height: var(--observablehq-header-height);
+    margin: 0 -2rem 2rem;
+    padding: 1rem 2rem .5rem;
+    background: var(--theme-background);
+    border-bottom: solid 1px var(--theme-foreground-faintest);
+    font: 500 16px var(--sans-serif)
+}
+
+#observablehq-main {
+    min-height: calc(100vh - 20rem);
+    position: relative;
+    z-index: 0;
+    container-type: inline-size
+}
+
+#observablehq-header ~ #observablehq-main {
+    margin-top: calc(var(--observablehq-header-height) + 1.5rem + 2rem)
+}
+
+#observablehq-center {
+    margin: 2rem;
+    --observablehq-inset-left: 0rem;
+    --observablehq-inset-right: 0rem
+}
+
+#observablehq-footer {
+    display: block;
+    margin-top: 10rem;
+    font: 12px var(--sans-serif);
+    color: var(--theme-foreground-faint)
+}
+
+/* ==================== Typografie ==================== */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--theme-foreground-alt);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-top: 0;
+    margin-bottom: .25rem
+}
+
+h1 + h2 {
+    color: var(--theme-foreground);
+    font-size: 20px;
+    font-style: italic;
+    font-weight: 400;
+    margin-bottom: 1rem
+}
+
+h2 + p, h3 + p, h4 + p {
+    margin-top: 0
+}
+
+.link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 1.5px;
+}
+
+a[href] {
+    color: var(--theme-foreground-focus);
+    text-decoration: none
+}
+
+a[href]:hover, a[href]:focus {
+    text-decoration: underline
+}
+
+.big {
+    font: var(--font-big)
+}
+
+.small {
+    font: var(--font-small)
+}
+
+.muted {
+    color: var(--theme-foreground-muted)
+}
+
+/* ==================== Titel und Beschriftung ==================== */
+.chart-title {
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Abstand zwischen Titel und Filter-Text */
+    margin: 0;
+    padding: 0 10px 10px 10px ;     /* 1rem in px = 16px; 10px in rem = 0.625rem */
+}
+
+.chart-title p {
+    font: 17px var(--sans-serif);
+}
+
+.chart-title h2 {
+    font-size: 24px;
+}
+
+.title-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem; /* Abstand zwischen den Elementen */
+}
+
+h2, p {
+    margin: 0; /* Entfernt Standard-Abstände */
+}
+
+/* ==================== Bubbles ==================== */
+.bubbles {
+    stroke-width: 1.5px;
+    stroke: white;
+}
+
+.bubbles:hover {
+    stroke: black;
+}
+
+/* ==================== Tooltip ==================== */
+#tooltip {
+    font: 14px var(--sans-serif);
+    position: absolute;
+    pointer-events: none;
+    max-width: 250px;
+    padding: 10px;
+    border: thin solid lightgrey;
+    border-radius: 5px;
+    background-color: white;
+    color: black;
+    opacity: 0;
+    transition: opacity 0.1s ease-in-out;
+}
+
+/* ==================== Tabellen ==================== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font: 13px/1.2 var(--sans-serif);
+    margin: 1rem 0;
+}
+
+td {
+    color: var(--theme-foreground-alt);
+    vertical-align: top;
+    padding: 3px 6.5px 3px 0
+}
+
+td:last-child {
+    padding-right: 0
+}
+
+tr:not(:last-child) {
+    border-bottom: solid 1px var(--theme-foreground-faintest)
+}
+
+/* ==================== Formulare ==================== */
+input, button {
+    vertical-align: middle;
+    accent-color: var(--theme-blue)
+}
+
+line {
+    stroke: #ccc;  /* Setzt die Farbe der Linien auf ein helles Grau */
+    stroke-opacity: 0.7;  /* Macht die Linien etwas transparenter */
+}
+
+/* ==================== Card ==================== */
+.card-container {
+    display: flex;
+    flex-direction: column; /* Cards werden vertikal gestapelt */
+    gap: 1rem; /* Abstand zwischen den Cards */
+}
+
+.card {
+    display: flex;
+    background: var(--theme-background-alt);
+    border: solid 1px var(--theme-foreground-faintest);
+    border-radius: 8px;
+    padding: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.card > :first-child, .card > :first-child > :first-child {
+    margin-top: 0
+}
+
+.card > :last-child, .card > :last-child > :last-child {
+    margin-bottom: 0
+}
+
+.card h3 {
+    font-size: inherit /* Erbt die Schriftgröße */
+}
+
+.card h3 {
+    font-weight: 400;
+    color: var(--theme-foreground-muted)
+}
+
+.card h2 ~ svg, .card h3 ~ svg, .card h2 ~ p, .card h3 ~ p {
+    margin-top: 1rem
+}
+
+/* ==================== Slider ==================== */
+#year-slider {
+    width: 100%;
+    margin: 20px 0;
+    -webkit-appearance: none;
+    background: transparent;
+    position: relative;
+}
+
+#year-slider::-webkit-slider-runnable-track {
+    height: 4px;
+    background: #ddd;
+    border-radius: 2px;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#year-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    background: #aaa;
+    cursor: pointer;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.slider-container {
+    position: relative;
+    text-align: center;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.slider-wrapper {
+    position: relative;
+    width: 50%;
+    margin: 0 auto 1rem;
+}
+
+.slider-ticks {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    top: 15px;
+    width: 100%;
+    transform: translateY(20px);
+}
+
+.slider-ticks .tick-year {
+    position: relative;
+    font-size: 14px;
+    text-align: center;
+}
+
+.slider-ticks .tick-year.selected {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.slider-ticks .tick-year::before {
+    content: "";
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 10px;
+    background: #ddd;
+    border-radius: 50%;
+}
+
+/* ==================== Switch Button ==================== */
+.switch-highlight {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;                 /* Standard auf der ersten Hälfte */
+    height: 100%;
+    background-color: #fff;
+    border-radius: 8px;
+    transition: left 0.3s ease; /* Weiche Animation beim Wechsel */
+}
+
+.switch-container {
+    display: flex;
+    position: relative;
+    border: solid 5px var(--theme-background-a);
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: var(--theme-background-a);
+    font-size: 17px;
+    width: 270px; /* Breite des Switches */
+    height: 34px; /* Höhe des Switches */
+}
+
+.switch-button {
+    padding: 7px 8px;
+    border: none;
+    border-radius: 8px;
+    background: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, font-weight 0.3s ease;
+    white-space: nowrap; /* Verhindert Zeilenumbruch */
+    flex: 1; /* Gleiche Breite */
+    font-size: 17px;
+    color: #555;
+    position: relative; /* Um über der Highlight-Ebene zu sein */
+    z-index: 1;
+}
+
+.switch-button.active {
+    color: #000;
+    font-weight: 550;
+}
+
+.switch-button:hover {
+    color: #000000;
+    font-weight: 550;
+}
+
+.switch-button:not(.active) {
+    color: #555;
+    width: 135px;
+}
+
+/* ==================== Variables and Theme Setup  ==================== */
+:root {
+    --theme-caret: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M5 7L8.125 9.5L11.25 7' stroke='black' stroke-width='1.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
+    --theme-toggle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='m10.5,11 2.5-3-2.5-3 M6,8h7' fill='none' stroke='black' stroke-width='2'/%3E%3Crect x='2' y='2' fill='currentColor' height='12' rx='0.5' width='2'/%3E%3C/svg%3E");
+    --theme-magnifier: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath stroke='currentColor' stroke-width='2' fill='none' d='M15,15L10.5,10.5a3,3 0 1,0 -6 -6a3,3 0 1,0 6 6'%3E%3C/path%3E%3C/svg%3E");
+    --observablehq-max-width: 1440px;
+    --observablehq-header-height: 2.2rem;
+    --font-big: 700 32px/1 var(--sans-serif);
+    --font-small: 14px var(--sans-serif);
+    --monospace: Menlo, Consolas, monospace;
+    --monospace-font: 14px/1.5 var(--monospace);
+    --serif: "Source Serif 4", "Iowan Old Style", "Apple Garamond", "Palatino Linotype", "Times New Roman", "Droid Serif", Times, serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --sans-serif: -apple-system, BlinkMacSystemFont, "avenir next", avenir, helvetica, "helvetica neue", ubuntu, roboto, noto, "segoe ui", arial, sans-serif;
+    --theme-blue: #4269d0;
+    --theme-green: #3ca951;
+    --theme-red: #ff725c;
+    --theme-yellow: #efb118;
+    scroll-padding-top: 2.5rem;
+}
+
+:root:has(#observablehq-header) {
+    scroll-padding-top: calc(var(--observablehq-header-height) + 2.5rem)
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --theme-background-b: color-mix(in srgb, var(--theme-foreground) 4%, var(--theme-background-a));
+        --theme-background: var(--theme-background-a);
+        --theme-background-alt: var(--theme-background-b);
+        --theme-foreground-alt: color-mix(in srgb, var(--theme-foreground) 90%, var(--theme-background-a));
+        --theme-foreground-muted: color-mix(in srgb, var(--theme-foreground) 60%, var(--theme-background-a));
+        --theme-foreground-faint: color-mix(in srgb, var(--theme-foreground) 50%, var(--theme-background-a));
+        --theme-foreground-fainter: color-mix(in srgb, var(--theme-foreground) 30%, var(--theme-background-a));
+        --theme-foreground-faintest: color-mix(in srgb, var(--theme-foreground) 14%, var(--theme-background-a));
+        --theme-foreground: #1b1e23;
+        --theme-foreground-focus: #3b5fc0;
+        --theme-background-a: #ffffff;
+        color-scheme: light
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --theme-background-a: color-mix(in srgb, var(--theme-foreground) 4%, var(--theme-background-b));
+        --theme-background: var(--theme-background-a);
+        --theme-background-alt: var(--theme-background-b);
+        --theme-foreground-alt: color-mix(in srgb, var(--theme-foreground) 90%, var(--theme-background-b));
+        --theme-foreground-muted: color-mix(in srgb, var(--theme-foreground) 60%, var(--theme-background-b));
+        --theme-foreground-faint: color-mix(in srgb, var(--theme-foreground) 50%, var(--theme-background-b));
+        --theme-foreground-fainter: color-mix(in srgb, var(--theme-foreground) 30%, var(--theme-background-b));
+        --theme-foreground-faintest: color-mix(in srgb, var(--theme-foreground) 14%, var(--theme-background-b));
+        --theme-foreground: #161616;
+        --theme-foreground-focus: oklch(.712564 .257662 265.758);
+        --theme-background-b: #ffffff;
+        color-scheme: dark
+    }
+}
