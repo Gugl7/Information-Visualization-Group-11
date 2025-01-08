@@ -1,14 +1,13 @@
-// Konstanten und Grundelemente
-const width = 800;
-const height = 300;
-const margin = { top: 20, right: 30, bottom: 50, left: 70 };
+let width = 800;
+let height = 400;
+let margin = { top: 20, right: 30, bottom: 50, left: 70 };
 
-const svg = d3.select("#chart")
+let svg = d3.select("#chart")
   .append("svg")
   .attr("width", width + margin.left + margin.right)
   .attr("height", height + margin.top + margin.bottom)
   .append("g")
-  .attr("transform", `translate(${margin.left}, ${margin.top})`);
+  .attr("transform", `translate(${margin.left},${margin.top})`);
 
 const tooltip = d3.select("body").append("div")
   .attr("class", "tooltip")
@@ -19,8 +18,8 @@ const tooltip = d3.select("body").append("div")
   .style("padding", "5px")
   .style("border-radius", "3px");
 
-// Filteroption
-let currentGenderFilter = "both";
+// Filteroptionen
+let currentGenderFilter = "both";  // "both", "M" oder "F"
 
 // Dropdown-Eventlistener
 d3.select("#gender-select").on("change", function () {
@@ -31,19 +30,57 @@ d3.select("#gender-select").on("change", function () {
 // Globale Datenvariable
 let data = [];
 
-// CSV laden und visualisieren
+// CSV laden und Daten aggregieren
 d3.dsv(",", "../../data/processed_data.csv")
   .then(loadedData => {
-    // Daten vorbereiten
-    data = loadedData.map(d => ({
-      year: +d.year,
-      male: +d.male,
-      female: +d.female,
+    console.log("Geladene Daten:", loadedData); // Debugging: Prüfe die Struktur der geladenen Daten
+    
+    // Aggregierte Zählung für Männer und Frauen pro Jahr
+    const aggregatedData = d3.rollups(
+      loadedData,  // Keine Duplikate entfernen, alle Ausstellungen werden berücksichtigt
+      exhibitions => {
+        const maleSet = new Set();
+        const femaleSet = new Set();
+
+        // Iteriere durch alle Ausstellungen und prüfe die beteiligten Künstler
+        exhibitions.forEach(d => {
+          const eId = d['e.id'];  // Eindeutige Ausstellungs-ID
+          const gender = d['a.gender'];  // Geschlecht des Künstlers
+
+          // Falls der Künstler männlich ist, füge die Ausstellung zu maleSet hinzu
+          if (gender === 'M') {
+            maleSet.add(eId);
+          }
+          // Falls der Künstler weiblich ist, füge die Ausstellung zu femaleSet hinzu
+          if (gender === 'F') {
+            femaleSet.add(eId);
+          }
+        });
+
+        // Aggregiere Ausstellungen pro Jahr
+        return {
+          male: maleSet.size,  // Männliche Ausstellungen
+          female: femaleSet.size,  // Weibliche Ausstellungen
+        };
+      },
+      d => new Date(d['e.startdate']).getFullYear()  // Gruppierung nach Jahr
+    );
+
+    // Aggregierte Daten ins gewünschte Format bringen
+    data = aggregatedData.map(([year, values]) => ({
+      year: year,
+      male: values.male,  // Männliche Ausstellungen
+      female: values.female,  // Weibliche Ausstellungen
     }));
+
+    // Jahre aufsteigend sortieren
+    data.sort((a, b) => a.year - b.year);
+
+    console.log("Aggregierte Daten:", data); // Debugging: Prüfe, ob die Daten korrekt aggregiert wurden
 
     // Skalen einrichten
     xScale.domain(data.map(d => d.year));
-    yScale.domain([0, d3.max(data, d => d.male + d.female)]).nice();
+    yScale.domain([0, d3.max(data, d => Math.max(d.male, d.female))]).nice();
 
     // Achsen zeichnen
     svg.append("g")
@@ -71,14 +108,14 @@ d3.dsv(",", "../../data/processed_data.csv")
       .style("font-family", "Arial")
       .text("Number of Exhibitions");
 
-    // Initiale Visualisierung
+    // Visualisierung initialisieren
     updateVisualization();
   })
   .catch(error => {
     console.error("Fehler beim Laden der CSV:", error);
   });
 
-// Skalen
+// Skalen für das Diagramm
 const xScale = d3.scaleBand()
   .range([0, width])
   .padding(0.1);
@@ -88,11 +125,17 @@ const yScale = d3.scaleLinear()
 
 // Visualisierung aktualisieren
 function updateVisualization() {
+  // Debugging: Ausgabe der aktuellen Filtereinstellungen
+  console.log("Aktueller Filter:", currentGenderFilter);
+
+  // Daten filtern basierend auf Geschlechtsauswahl
   const filteredData = data.map(d => ({
     year: d.year,
-    male: currentGenderFilter === "F" ? 0 : d.male,
-    female: currentGenderFilter === "M" ? 0 : d.female,
+    male: currentGenderFilter === "F" ? 0 : d.male, // Männer nur zählen, wenn der Filter nicht "F" ist
+    female: currentGenderFilter === "M" ? 0 : d.female, // Frauen nur zählen, wenn der Filter nicht "M" ist
   }));
+
+  console.log("Gefilterte Daten:", filteredData); // Debugging: Prüfe die gefilterten Daten
 
   // Daten binden und Gruppen für jedes Jahr erstellen
   const bars = svg.selectAll(".bar-group")
@@ -113,12 +156,12 @@ function updateVisualization() {
     .attr("class", "male-bar")
     .attr("x", 0)
     .attr("y", d => yScale(d.male))
-    .attr("width", xScale.bandwidth() / 2)
+    .attr("width", xScale.bandwidth() / 3)
     .attr("height", d => height - yScale(d.male))
     .attr("fill", "#1e81b0")
     .on("mouseover", (event, d) => {
       tooltip.style("visibility", "visible")
-        .html(`Year: ${d.year}<br>Male: ${d.male}`);
+        .html(`Year: ${d.year}<br>Exhibitions with Male Participants: ${d.male}`);
     })
     .on("mousemove", event => {
       tooltip.style("top", (event.pageY + 5) + "px")
@@ -130,14 +173,14 @@ function updateVisualization() {
   barsEnter.append("rect")
     .merge(bars.select(".female-bar"))
     .attr("class", "female-bar")
-    .attr("x", xScale.bandwidth() / 2)
+    .attr("x", xScale.bandwidth() / 3)
     .attr("y", d => yScale(d.female))
-    .attr("width", xScale.bandwidth() / 2)
+    .attr("width", xScale.bandwidth() / 3)
     .attr("height", d => height - yScale(d.female))
     .attr("fill", "#f1a7c1")
     .on("mouseover", (event, d) => {
       tooltip.style("visibility", "visible")
-        .html(`Year: ${d.year}<br>Female: ${d.female}`);
+        .html(`Year: ${d.year}<br>Exhibitions with Female Participants: ${d.female}`);
     })
     .on("mousemove", event => {
       tooltip.style("top", (event.pageY + 5) + "px")
