@@ -1,5 +1,5 @@
 let width = 800;
-let height = 400;
+let height = 200;
 let margin = { top: 20, right: 30, bottom: 50, left: 70 };
 
 let svg = d3.select("#chart")
