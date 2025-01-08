@@ -1,51 +1,26 @@
-html {
-  -webkit-text-size-adjust: 100%;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background: var(--theme-background);
-  color: var(--theme-foreground)
-}
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  overflow: auto; /* Ermöglicht das Scrollen des gesamten Dokuments */
-  height: 100vh; /* Setzt die Höhe auf die volle Ansichtshöhe */
-  display: flex;
-  flex-direction: column;
-}
-
-#title {
-  text-align: center;
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 15px;
-  border-bottom: 1px solid #ccc;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 0; /* Fixiert den Titelbereich oben */
-  z-index: 1;
-}
-
 #content {
   display: flex;
-  flex-direction: column; /* Layout für die Anzeige in einer Spalte */
+  flex-direction: row; /* Ändert das Layout auf nebeneinander */
+  justify-content: space-between; /* Sorgt dafür, dass die beiden Bereiche (Diagramm und Filter) den gesamten Raum einnehmen */
   padding: 20px;
-  flex-grow: 1; /* Der Inhalt wächst, um den verfügbaren Raum zu füllen */
-  overflow: auto; /* Aktiviert das Scrollen innerhalb des Containers */
+  flex-grow: 1;
+  overflow: auto;
 }
 
 #chart {
-  width: 100%;
-  height: 500px; /* Stellen Sie sicher, dass das Diagramm eine feste Höhe hat */
+  width: 75%; /* Das Diagramm nimmt 75% des Platzes ein */
+  height: 300px;
   background-color: #f9f9f9;
   border: 1px solid #ddd;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px; /* Abstand unter dem Diagramm */
-  overflow: auto; /* Aktiviert das Scrollen für den Chart-Bereich */
+  margin-right: 20px; /* Abstand zwischen Diagramm und Filter */
+  overflow: auto;
 }
 
 #filters {
-  margin-top: 20px;
+  width: 20%; /* Der Filterbereich nimmt 20% des Platzes ein */
+  height: 50px;
   padding: 10px;
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: 5px;
@@ -60,21 +35,10 @@ body {
 }
 
 #gender-select {
-  width: 150px;
+  width: 100%; /* Filter breitet sich vollständig aus */
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 14px;
   background-color: #fff;
-}
-
-.tooltip {
-  position: absolute;
-  background-color: white;
-  border: 1px solid #ccc;
-  padding: 5px;
-  border-radius: 4px;
-  font-size: 12px;
-  pointer-events: none;
-  visibility: hidden;
 }
