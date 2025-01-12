@@ -1,24 +1,15 @@
 let map_width = window.innerWidth;
 let map_height = window.innerHeight;
 
-
-let map_filteredData = [];
 let map_aggregatedData = [];
 
 let map_zoomLevel = 1;
-let map_groupedData = [];
-
-let map_bubbleColor;
-
-let map_maxTotalPaintingsGlobal = 0;
-let map_minPaintingsGlobal = Infinity;
 
 let map_maxPaintings;
 let map_minPaintings;
 
 let map_radiusScale;
-const map_maxRadius = 34;
-
+let map_bubbleColor;
 
 const projection = d3.geoMercator()
     .scale((map_width + map_height) / 2 / Math.PI)
@@ -41,36 +32,38 @@ const zoom = d3.zoom()
 
 map_svg.call(zoom);
 
-function findMinAndMaxPaintings() {
+function findMinAndMaxPaintingsGlobalMap() {
 
-    for (const [startdate, cities] of map_groupedData) {
-        for (const [city, records] of cities) {
+    let map_maxPaintings = 0;
+    let map_minPaintings = Infinity;
+
+    for ([startdate, cities] of map_groupedData) {
+        for ([city, records] of cities) {
             const totalPaintings = d3.sum(records, d => +d["e.paintings"]);
 
-            if (totalPaintings > map_maxTotalPaintingsGlobal) {
-                map_maxTotalPaintingsGlobal = totalPaintings;
+            if (totalPaintings > map_maxPaintings) {
+                map_maxPaintings = totalPaintings;
             }
 
-            if (totalPaintings > 0 && totalPaintings < map_minPaintingsGlobal) {
-                map_minPaintingsGlobal = totalPaintings;
+            if (totalPaintings > 0 && totalPaintings < map_minPaintings) {
+                map_minPaintings = totalPaintings;
             }
         }
     }
-
-    if (map_minPaintingsGlobal === Infinity) {
-        map_minPaintingsGlobal = 0;
+    if (map_minPaintings === Infinity) {
+        map_minPaintings = 0;
     }
 
     return {
-        max: map_maxTotalPaintingsGlobal,
-        min: map_minPaintingsGlobal
+        max_global: map_maxPaintings,
+        min_global: map_minPaintings
     };
 }
 
 function updateMap() {
     const map_cityData = d3.group(filterData(), d => d["e.city"]);
 
-    let {max: maxTotalPaintingsGlobalMap, min: minMapPaintingsGlobal} = findMinAndMaxPaintings();
+    let {max_global, min_global} = findMinAndMaxPaintingsGlobalMap();
 
     map_aggregatedData = Array.from(map_cityData, ([city, records]) => {
         const malePaintings = d3.sum(records, d => (d["a.gender"] === "M" ? +d["e.paintings"] : 0));
@@ -94,30 +87,26 @@ function updateMap() {
 
     isMaxGlobalMap = (currentMode === "global");
 
-    const mapCountries = Array.from(new Set(map_filteredData.map(d => d["e.country"])));
+    const countries_for_colors = Array.from(new Set(filteredData.map(d => d["e.country"])));
 
-    const maxMapPaintingsLocal = d3.max(map_aggregatedData, d => d.totalPaintings)
-    const minMapPaintingsLocal = d3.min(map_aggregatedData, d => d.totalPaintings);
+    const max_local = d3.max(map_aggregatedData, d => d.totalPaintings)
+    const min_local = d3.min(map_aggregatedData, d => d.totalPaintings);
 
-    map_maxPaintings = isMaxGlobalMap ? maxTotalPaintingsGlobalMap : maxMapPaintingsLocal;
-    map_minPaintings = isMaxGlobalMap ? minMapPaintingsGlobal : minMapPaintingsLocal;
+    map_maxPaintings = isMaxGlobalMap ? max_global : max_local;
+    map_minPaintings = isMaxGlobalMap ? min_global : min_local;
 
     map_radiusScale = d3.scaleSqrt()
         .domain([map_minPaintings, map_maxPaintings])
-        .range([4, map_maxRadius]);
+        .range([4, maxBubbleRadius]);
 
-    if (genderFilter.value === "ALL") {
-        map_bubbleColor = d => d["a.gender"] === "M" ? "#418fc7" : "#ea8dc3";
-    } else {
-        map_bubbleColor = d3.scaleOrdinal()
-            .domain(mapCountries)
-            .range(d3.schemeCategory20);
-    }
+    map_bubbleColor = d3.scaleOrdinal()
+        .domain(countries_for_colors)
+        .range(d3.schemeCategory20);
 
-    addPiesBubblesTooltip()
+    addMapPiesBubblesTooltip()
 }
 
-function addPiesBubblesTooltip() {
+function addMapPiesBubblesTooltip() {
 
     const sortedMapData = map_aggregatedData.sort((a, b) =>
         map_radiusScale(b.totalPaintings) - map_radiusScale(a.totalPaintings)
@@ -144,7 +133,7 @@ function addPiesBubblesTooltip() {
                     {gender: "Female", value: d.femalePaintings || 0},
                 ].filter(item => item.value > 0);
 
-                createPieChart(group, cx, cy, pieData, map_radiusScale(d.totalPaintings) / map_zoomLevel);
+                createMapPieCharts(group, cx, cy, pieData, map_radiusScale(d.totalPaintings) / map_zoomLevel);
 
                 createMapTooltip(group, `
                 <table>
@@ -226,13 +215,13 @@ function addMapLegend() {
     bubbleSizesMap.forEach((size, i) => {
         let addPosition = 0;
         if (i !== 0) {
-            addPosition = (34 - Math.round(map_radiusScale(size))) * (i / i);
+            addPosition = (maxBubbleRadius - Math.round(map_radiusScale(size))) * (i / i);
         }
         const spaceBetween = 60;
 
         const circleRadius = Math.round(map_radiusScale(size));
         const circleX = spaceBetween;
-        const circleY = 34 + spaceBetween + addPosition;
+        const circleY = maxBubbleRadius + spaceBetween + addPosition;
         const textX = 130;
 
         // LEGEND: Bubbles
@@ -288,7 +277,7 @@ function addMapLegend() {
 }
 
 const createMapTooltip = (group, content) => {
-    group.on("mouseover", (event) => {
+    group.on("mouseover", () => {
         mapTooltip.style("visibility", "visible").html(content);
     })
         .on("mousemove", (event) => {
@@ -300,7 +289,7 @@ const createMapTooltip = (group, content) => {
         });
 };
 
-const createPieChart = (group, cx, cy, pieData, radius) => {
+const createMapPieCharts = (group, cx, cy, pieData, radius) => {
     const pie = d3.pie()
         .value(d => d.value)
         .sortValues(d3.ascending);
@@ -328,8 +317,7 @@ const createMapBubbles = (group, cx, cy, radius, country, className) => {
         .attr("cy", cy)
         .attr("r", radius)
         .attr("fill", () => {
-            const color = map_bubbleColor(country);
-            return d3.color(color).copy({opacity: 0.7});
+            return d3.color(map_bubbleColor(country)).copy({opacity: 0.7});
         })
         .attr("stroke", "white")
         .attr("stroke-width", 2 / map_zoomLevel)

@@ -48,16 +48,15 @@
             <div class="card" style="padding:0; position: sticky; top: 60px;">
                 <div style="padding: 0 1rem 0 1rem ;">
                     <h2 style="font: 17px/1.5 var(--sans-serif); padding: 1rem 0 0.5rem 0">Filtered by:
-                        <span style="font-weight: 700;" class="filter-info"></span></h2>
+                        <span style="font-weight: 700;" id="filter-info"></span></h2>
 
                     <hr style="border: 0.5px solid var(--theme-foreground-faintest); width: 100%; margin: 0">
                 </div>
 
                 <div class="flex" id="filter-panel">
-                    <div style="padding: 0; margin: 1rem 0 1rem 1rem; align-content: center">
+                    <div class="outer-filter" style="margin-left: 1rem">
                         <div style="width:270px; margin: auto; display: flex; gap:1rem">
-                            <label for="gender-filter"><p style="font: 17px/1.5 var(--sans-serif);">Artist Gender:</p>
-                            </label>
+                            <label for="gender-filter" style="font: 17px/1.5 var(--sans-serif)">Artist Gender:</label>
                             <select id="gender-filter" style="flex: max-content">
                                 <option value="ALL">Male & Female</option>
                                 <option value="M">Male</option>
@@ -66,8 +65,8 @@
                         </div>
                     </div>
 
-                    <div class="slider-container"
-                         style="padding: 1rem 0 2rem 0; gap:1rem; align-content: center; ">
+                    <div class="slider-container">
+                        <label for="year-slider"></label>
                         <div class="slider-wrapper">
                             <div class="slider-ticks">
                                 <div class="tick-year">1905</div>
@@ -84,7 +83,7 @@
                         </div>
                     </div>
 
-                    <div style="padding: 0; margin: 1rem 1rem 1rem 0; align-content: center; justify-content: center">
+                    <div class="outer-filter" style="margin-right: 1rem">
                         <div class="tooltip switch-container">
                             <div class="switch-highlight"></div>
                             <button id="switch-global" class="tooltip switch-button active"
@@ -102,7 +101,7 @@
             </div>
 
                 <!-- WORLD MAP -->
-                <div class="card" style="overflow: visible; display: block; flex-direction: column;">
+                <div class="card">
                     <div class="chart-title">
                         <div class="title-container">
                             <h2 style="padding: 0 0 1rem 0">Distribution of Paintings by Cities</h2>
@@ -114,8 +113,7 @@
             </div>
 
             <!--BUBBLE CHART-->
-            <div class="bubble-chart card"
-                 style="overflow: visible; display: block; flex-direction: column;">
+            <div class="bubble-chart card">
                 <div class="chart-title" style="padding-bottom: 0.5rem">
                     <div class="title-container">
                         <h2>Distribution of Venues & Artists by Countries & Paintings</h2>

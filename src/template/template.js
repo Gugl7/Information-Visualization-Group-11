@@ -1,6 +1,5 @@
-let artvisData = [];
-let filteredData = [];
-let groupedData = [];
+let artvisData = [], filteredData = [], groupedData = []; map_groupedData = [];
+const maxBubbleRadius = 30;
 
 const map_svg = d3.select("#map").append("svg")
     .attr("width", 1000)
@@ -8,7 +7,6 @@ const map_svg = d3.select("#map").append("svg")
     .style("background-color", "#fcfcfc");
 
 const map_group = map_svg.append("g");
-
 
 const tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
@@ -19,11 +17,10 @@ const tooltip = d3.select("body").append("div")
     .style("padding", "5px")
     .style("border-radius", "3px");
 
-
 // DOM Elements for controls
 const yearSlider = document.getElementById("year-slider");
 const genderFilter = document.getElementById("gender-filter");
-const filterDetails = document.querySelectorAll(".filter-info");
+const filterDetails = document.getElementById("filter-info");
 
 // SWITCH BUTTON
 const switchLocal = document.getElementById("switch-local");
@@ -99,10 +96,7 @@ function updateFilterInfo() {
     } else if (gender === "F") {
         genderText = "Female Artists";
     }
-
-    filterDetails.forEach(filter => {
-        filter.textContent = `${genderText}, ${year}`;
-    });
+    filterDetails.textContent = `${genderText}, ${year}`;
 }
 
 const validStartDates = ["1905", "1906", "1907", "1908", "1909", "1910"];
@@ -168,6 +162,6 @@ d3.dsv(";", "../../data/artvis_dump_NEW-semicolon.csv").then(data => {
         updateBubbleChartAndMap();
     });
 }).catch(error => {
-    console.error("Fehler beim Laden der CSV:", error);
+    console.error("Error loading CSV:", error);
 });
 

@@ -8,7 +8,7 @@ var svgBubbleChart;
 // TOOLTIP
 var venuesTooltip = d3.select("body")
     .append("div")
-    .attr("id", "tooltipChart")
+    .attr("id", "venueTooltip")
 
 // TOOLTIP: auxiliary functions
 const formatTableRow = (label, value) => `<tr><td>${label}:</td><td style='text-align: right;'>${value}</td></tr>`;
@@ -43,8 +43,8 @@ function findMaxArtistsAndPaintingsVenue() {
     };
     for (const [, cities] of groupedData) {
         for (const [, venues] of cities) {
-            for (const [venue, records] of venues) {
-                const uniqueArtistsCount = new Set(records.map(d => d["a.id"])).size;
+            for ([venue, records] of venues) {
+                let uniqueArtistsCount = new Set(records.map(d => d["a.id"])).size;
                 if (uniqueArtistsCount > result.maxArtistsGlobal) {
                     result.maxArtistsGlobal = uniqueArtistsCount;
                 }
@@ -84,20 +84,18 @@ function renderChart() {
     // ---------------------------//
 
     // X AXIS: Data preparation
-    const vcCountries = Array.from(new Set(filteredData.map(d => d["e.country"])));
-    const countriesWithData = vcCountries.filter(vcCountry => aggrData.some(d => d.vcCountry === vcCountry));
-    const countryData = isMaxGlobal ? vcCountries : countriesWithData;
+    const x_countries = Array.from(new Set(filteredData.map(d => d["e.country"])));
 
     var bubbleColor = d3.scaleOrdinal()
-        .domain(vcCountries)
+        .domain(x_countries)
         .range(d3.schemeCategory20)
 
     // X AXIS: Scale
     const rangeX = d3.scaleBand()
-        .domain(vcCountries)
+        .domain(x_countries)
         .range([0, chart_width]);
 
-    renderXAxisLabels(svgBubbleChart, rangeX, vcCountries);
+    renderXAxisLabels(svgBubbleChart, rangeX, x_countries);
 
     // ---------------------------//
     //         BUBBLE SIZE        //
@@ -111,7 +109,7 @@ function renderChart() {
     maxBubbleSize = isMaxGlobal ? maxArtistsGlobal : d3.max(aggrData, d => d.totalArtists);
     radiusBubbleScale = d3.scaleSqrt()
         .domain([1, maxBubbleSize])
-        .range([4, 30]);
+        .range([4, maxBubbleRadius]);
 
     // ---------------------------//
     //           Y AXIS           //
@@ -122,7 +120,7 @@ function renderChart() {
     const radiusForVenue = totalArtistsTopBubble ? radiusBubbleScale(totalArtistsTopBubble) : null;
 
     const maxBubbleRadiusLocal = topBubblePaintings / (chart_width / (radiusForVenue * 1.33));
-    const maxBubbleRadiusGlobal = maxPaintingsGlobal / (chart_width / 40); // 30 = max radius
+    const maxBubbleRadiusGlobal = maxPaintingsGlobal / (chart_width / (maxBubbleRadius + 10));
 
     const maxPaintings = isMaxGlobal
         ? maxPaintingsGlobal + maxBubbleRadiusGlobal * 2
@@ -156,7 +154,7 @@ function renderChart() {
 
 function addBubblesAndBrush(aggrData, scatter, rangeX, rangeY, yAxis, bubbleColor, maxPaintings) {
 
-    // Add brushing
+    // BRUSH
     var brush = d3.brushY()
         .extent([[0, 0], [chart_width, chart_height]])  // brush area: whole graph area
         .on("end", function (event) {
@@ -418,7 +416,7 @@ function getTooltipTable(d, exhibitionCityVenueMap) {
 
 function addLegend() {
 
-    d3.select("#legendID").remove();
+    d3.select("#venue_legendID").remove();
 
     let chartWidth = svgBubbleChart.node().getBoundingClientRect().width;
 
@@ -434,7 +432,7 @@ function addLegend() {
     let fifth = Math.round((maxBubbleSize - minBubbleSize) / 5);
 
     const legendVenue = svgBubbleChart.append("g")
-        .attr("id", "legendID")
+        .attr("id", "venue_legendID")
         .attr("transform", `translate(${legendX}, ${legendY})`);
 
     // Add a white background to the legend

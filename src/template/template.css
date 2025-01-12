@@ -144,7 +144,6 @@ h2, p {
 
 #bubble_chart svg{
     width: 100%;
-    height: 100%;
 }
 
 /* ==================== MAP: Pie Charts ==================== */
@@ -249,7 +248,7 @@ h2, p {
     transition: opacity 0.1s ease-in-out;
 }
 /* ==================== V-Chart: Tooltip ==================== */
-#tooltipChart {
+#venueTooltip {
     font: 14px var(--sans-serif);
     position: absolute;
     pointer-events: none;
@@ -296,7 +295,7 @@ line {
     stroke-opacity: 0.7;
 }
 
-#legendID line {
+#venue_legendID line {
     stroke: #aaa;
 }
 
@@ -324,14 +323,6 @@ line {
 
 .grid {
     gap: 1rem;
-}
-
-.card > :first-child, .card > :first-child > :first-child {
-    margin-top: 0
-}
-
-.card > :last-child, .card > :last-child > :last-child {
-    margin-bottom: 0
 }
 
 .card h2 ~ svg, .card h2 ~ p{
@@ -475,29 +466,6 @@ select {
     transition: border 0.3s ease;
 }
 
-.outer-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-    padding: 10px 20px;
-    border: solid 1px var(--theme-foreground-faintest);
-    border-radius: 8px;
-}
-
-.inner-card {
-    gap: 1rem;
-    flex: 1;
-    margin: 0;
-    border-radius: 10px;
-    align-content: center;
-}
-
-.outer-card > .inner-card:not(:last-child) {
-    margin-bottom: 10px;
-}
-
-
 /* ==================== SWITCH BUTTON: Tooltip ==================== */
 .tooltip.switch-button, .tooltip.switch-button.active, .tooltipLocal.switch-button, .tooltipLocal.switch-button.active {
     position: relative;
@@ -582,20 +550,27 @@ body::after {
     height: 500px;
 }
 
-@media (min-width: 100px) {
-    .slider-container {
-        width: 60%;
-    }
+.slider-container {
+    padding: 1rem 0 2rem 0;
+    width: 60%;
+}
+
+.outer-filter {
+    display: flex;
+    gap: 1rem;
+    align-content: center;
+    justify-content: center;
+    padding: 0;
+    margin: 1rem 0;
 }
 
 #filter-panel.grid  {
     padding: 0;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1100px) {
 
     #filter-panel.flex  {
-
         flex-direction: column;
         gap: 0.5rem;
     }
