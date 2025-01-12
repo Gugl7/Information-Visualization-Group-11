@@ -5,11 +5,6 @@ let maxBubbleSize;
 let radiusBubbleScale;
 var svgBubbleChart;
 
-// TOOLTIP
-var venuesTooltip = d3.select("body")
-    .append("div")
-    .attr("id", "venueTooltip")
-
 // TOOLTIP: auxiliary functions
 const formatTableRow = (label, value) => `<tr><td>${label}:</td><td style='text-align: right;'>${value}</td></tr>`;
 const uniqueValues = (array, key) => [...new Set(array.map(item => item[key]))];

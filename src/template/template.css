@@ -233,32 +233,17 @@ h2, p {
     height: 220px;
 }
 
-/* ==================== MAP: Tooltip ==================== */
-#mapTooltip {
+/* ==================== Tooltip ==================== */
+#mapTooltip, #venueTooltip, #barTooltip  {
+    max-width: 250px;
+    font: 14px var(--sans-serif);
     position: absolute;
     background-color: white;
-    border: thin solid lightgrey;
-    padding: 10px;
-    border-radius: 5px;
-    font: 14px var(--sans-serif);
-    pointer-events: none;
-    visibility: hidden;
-    max-width: 250px;
     color: black;
-    transition: opacity 0.1s ease-in-out;
-}
-/* ==================== V-Chart: Tooltip ==================== */
-#venueTooltip {
-    font: 14px var(--sans-serif);
-    position: absolute;
-    pointer-events: none;
-    max-width: 250px;
     padding: 10px;
     border: thin solid lightgrey;
     border-radius: 5px;
-    background-color: white;
-    color: black;
-    opacity: 0;
+    pointer-events: none;
     transition: opacity 0.1s ease-in-out;
 }
 

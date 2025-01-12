@@ -17,10 +17,6 @@ const projection = d3.geoMercator()
 
 const path = d3.geoPath().projection(projection);
 
-const mapTooltip = d3.select("body")
-    .append("div")
-    .attr("id", "mapTooltip")
-
 const zoom = d3.zoom()
     .scaleExtent([1, 8])
     .on("zoom", (event) => {

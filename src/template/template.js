@@ -17,6 +17,19 @@ const tooltip = d3.select("body").append("div")
     .style("padding", "5px")
     .style("border-radius", "3px");
 
+const mapTooltip = d3.select("body")
+    .append("div")
+    .attr("id", "mapTooltip")
+
+var venuesTooltip = d3.select("body")
+    .append("div")
+    .attr("id", "venueTooltip")
+
+var barsTooltip = d3.select("body")
+    .append("div")
+    .attr("id", "barTooltip")
+
+
 // DOM Elements for controls
 const yearSlider = document.getElementById("year-slider");
 const genderFilter = document.getElementById("gender-filter");
