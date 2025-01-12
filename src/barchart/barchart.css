@@ -1,0 +1,59 @@
+#title {
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 15px;
+  border-bottom: 1px solid #ccc;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Zentriert den Inhalt horizontal */
+  justify-content: center; /* Zentriert den Inhalt vertikal */
+}
+
+#content {
+  position: relative; /* Ermöglicht die Positionierung des Filters innerhalb des Containers */
+  padding: 20px;
+  flex-grow: 1;
+  overflow: auto;
+}
+
+#chart {
+  width: 100%; /* Das Diagramm nimmt die gesamte Breite des Containers ein */
+  height: 300px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px; /* Abstand unter dem Diagramm */
+  overflow: auto;
+}
+
+#filters {
+  position: absolute; /* Positioniert den Filter relativ zum Eltern-Container */
+  top: 50px; /* Abstand vom oberen Rand */
+  right: 50px; /* Abstand vom rechten Rand */
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+#filters label {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  display: block;
+}
+
+#gender-select {
+  width: 150px; /* Breite des Dropdowns */
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  background-color: #fff;
+}
+
