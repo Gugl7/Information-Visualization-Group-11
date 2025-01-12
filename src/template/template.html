@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+    <title>Gender Representation: Cities, Venues and Exhibitions</title>
+    <link rel="stylesheet" href="template.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap"
+          crossorigin>
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script src="https://d3js.org/topojson.v3.min.js"></script>
+</head>
+
+<body>
+
+<div id="observablehq-center">
+
+    <header id="observablehq-header">
+        <div class="grid-rowspan-2"
+             style="display: flex; flex-grow: 1; justify-content: space-between; align-items: baseline;">
+            <span style="font-weight: 700; color: var(--theme-foreground-alt)">Gender Representation: Cities, Venues and Exhibitions</span>
+            <span style="display: flex; align-items: baseline; gap: 0.5rem; font-size: 14px;"> <span
+                    style="color: var(--theme-foreground-faint);">Kaiser</span>
+            </span>
+        </div>
+    </header>
+
+    <main id="observablehq-main">
+
+
+        <div class="card-container" style="font: var(--sans-serif);">
+
+            <!-- Lia: BAR CHART -->
+            <div class="card" style="overflow: visible; display: block; flex-direction: column;">
+                <div class="chart-title" style="padding-bottom: 1rem">
+                    <h2>Gender Representation in Exhibitions</h2>
+                </div>
+
+                <!-- Hier einfügen -->
+
+            </div>
+
+
+            <div class="card" style="padding:0; position: sticky; top: 60px;">
+                <div style="padding: 0 1rem 0 1rem ;">
+                    <h2 style="font: 17px/1.5 var(--sans-serif); padding: 1rem 0 0.5rem 0">Filtered by:
+                        <span style="font-weight: 700;" class="filter-info"></span></h2>
+
+                    <hr style="border: 0.5px solid var(--theme-foreground-faintest); width: 100%; margin: 0">
+                </div>
+
+                <div class="flex" id="filter-panel">
+                    <div style="padding: 0; margin: 1rem 0 1rem 1rem; align-content: center">
+                        <div style="width:270px; margin: auto; display: flex; gap:1rem">
+                            <label for="gender-filter"><p style="font: 17px/1.5 var(--sans-serif);">Artist Gender:</p>
+                            </label>
+                            <select id="gender-filter" style="flex: max-content">
+                                <option value="ALL">Male & Female</option>
+                                <option value="M">Male</option>
+                                <option value="F">Female</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="slider-container"
+                         style="padding: 1rem 0 2rem 0; gap:1rem; align-content: center; ">
+                        <div class="slider-wrapper">
+                            <div class="slider-ticks">
+                                <div class="tick-year">1905</div>
+                                <div class="tick-year">1906</div>
+                                <div class="tick-year">1907</div>
+                                <div class="tick-year">1908</div>
+                                <div class="tick-year">1909</div>
+                                <div class="tick-year">1910</div>
+                            </div>
+                            <div style="padding-left: 12px; padding-right: 12px">
+                                <input type="range" id="year-slider" min="1905" max="1910" step="1" value="1905"
+                                       oninput="updateSliderLabel()"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="padding: 0; margin: 1rem 1rem 1rem 0; align-content: center; justify-content: center">
+                        <div class="tooltip switch-container">
+                            <div class="switch-highlight"></div>
+                            <button id="switch-global" class="tooltip switch-button active"
+                                    onclick="switchMode('global')">
+                                Fixed Scale<span class="switch-tooltip">Compare all years on the same scale.</span>
+                            </button>
+                            <button id="switch-local" class="tooltipLocal switch-button" onclick="switchMode('local')">
+                                Dynamic Scale<span class="switch-tooltip">Focus on one year's details with an adjusted scale.</span>
+                            </button>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+                <!-- WORLD MAP -->
+                <div class="card" style="overflow: visible; display: block; flex-direction: column;">
+                    <div class="chart-title">
+                        <div class="title-container">
+                            <h2 style="padding: 0 0 1rem 0">Distribution of Paintings by Cities</h2>
+                        </div>
+                    </div>
+                    <div id="map" style="font: 14px var(--sans-serif); overflow: visible"></div>
+                </div>
+
+            </div>
+
+            <!--BUBBLE CHART-->
+            <div class="bubble-chart card"
+                 style="overflow: visible; display: block; flex-direction: column;">
+                <div class="chart-title" style="padding-bottom: 0.5rem">
+                    <div class="title-container">
+                        <h2>Distribution of Venues & Artists by Countries & Paintings</h2>
+                    </div>
+                </div>
+                <div id="bubble_chart" style="font: 14px var(--sans-serif); overflow: visible"></div>
+            </div>
+
+
+            <script src="venue-chart.js"></script>
+
+    </main>
+</div>
+
+<script src="template.js"></script>
+<script src="bubble-map.js"></script>
+
+</body>
+<footer>
+    <div id="observablehq-footer"></div>
+</footer>
+</html>
