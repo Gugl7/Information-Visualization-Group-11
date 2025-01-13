@@ -127,7 +127,12 @@ function updateVisualization() {
     .attr("fill", "#1e81b0")
     .on("mouseover", (event, d) => {
       barsTooltip.style("visibility", "visible")
-        .html(`Year: ${d.year}<br>Exhibitions with Male Participants: ${d.male}`);
+
+        .html(`<strong>Male Artists</strong>
+            <table style="margin: 5px 0">
+            <tr><td>Year:</td><td style='text-align: right;'>${d.year}</td></tr>
+            <tr><td>Exhibitions:</td><td style='text-align: right;'>${d.male}</td></tr>
+            </table>`);
     })
     .on("mousemove", event => {
       barsTooltip.style("top", (event.pageY + 5) + "px")
@@ -146,7 +151,11 @@ function updateVisualization() {
     .attr("fill", "#f1a7c1")
     .on("mouseover", (event, d) => {
       barsTooltip.style("visibility", "visible")
-        .html(`Year: ${d.year}<br>Exhibitions with Female Participants: ${d.female}`);
+        .html(`<strong>Female Artists</strong>
+            <table style="margin: 5px 0">
+            <tr><td>Year:</td><td style='text-align: right;'>${d.year}</td></tr>
+            <tr><td>Exhibitions:</td><td style='text-align: right;'>${d.female}</td></tr>
+            </table>`);
     })
     .on("mousemove", event => {
       barsTooltip.style("top", (event.pageY + 5) + "px")

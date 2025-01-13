@@ -25,6 +25,9 @@ var venuesTooltip = d3.select("body")
     .append("div")
     .attr("id", "venueTooltip")
 
+var barsTooltip = d3.select("body")
+    .append("div")
+    .attr("id", "barTooltip")
 
 // DOM Elements for controls
 const yearSlider = document.getElementById("year-slider");
