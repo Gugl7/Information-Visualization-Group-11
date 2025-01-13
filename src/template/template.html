@@ -24,7 +24,7 @@
              style="display: flex; flex-grow: 1; justify-content: space-between; align-items: baseline;">
             <span style="font-weight: 700; color: var(--theme-foreground-alt)">Gender Representation: Cities, Venues and Exhibitions</span>
             <span style="display: flex; align-items: baseline; gap: 0.5rem; font-size: 14px;"> <span
-                    style="color: var(--theme-foreground-faint);">Kaiser</span>
+                    style="color: var(--theme-foreground-faint);">Kaiser, Tarapat, Gugleta</span>
             </span>
         </div>
     </header>
@@ -40,9 +40,8 @@
                     <h2>Gender Representation in Exhibitions</h2>
                 </div>
 
-                <!-- Hier einfügen -->
-            <!-- Geschlechtsfilter -->
                
+                <!-- Geschlechtsfilter -->
                 <div id="filters">
                     <label for="gender-select">Artist Gender:</label>
                     <select id="gender-select">
@@ -53,9 +52,21 @@
                 </div>
 
                 <!-- Bar Chart Container -->
-                <div id="chart" style="width: 100%; height: 400px;"></div>
-
+                <div id="chart" style="width: 100%; height: 250px; position: relative;"></div>
+              <!-- Legende -->
+                 <div id="legend-card" style="display: flex; gap: 1rem; padding-top: 1rem; align-items: center;">
+                    <label>Bar Chart Colors:</label>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <div style="width: 10px; height: 10px; background-color: #1e81b0;"></div>
+                        <span>Male</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <div style="width: 10px; height: 10px; background-color: #f1a7c1;"></div>
+                        <span>Female</span>
+                    </div>
+                </div>
                 <!-- Include Bar Chart Script -->
+                <script src="https://d3js.org/d3.v7.min.js"></script>
                 <script src="barchart.js"></script>
             </div>
             </div>

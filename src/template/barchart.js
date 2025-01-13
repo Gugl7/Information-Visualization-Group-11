@@ -9,7 +9,14 @@ let svg = d3.select("#chart")
   .append("g")
   .attr("transform", `translate(${margin.left},${margin.top})`);
 
-
+const barsTooltipooltip = d3.select("body").append("div")
+  .attr("class", "tooltip")
+  .style("position", "absolute")
+  .style("visibility", "hidden")
+  .style("background-color", "#fff")
+  .style("border", "1px solid #ccc")
+  .style("padding", "5px")
+  .style("border-radius", "3px");
 
 // Filteroptionen
 let currentGenderFilter = "both";  // "both", "M" oder "F"
@@ -117,7 +124,7 @@ function updateVisualization() {
     .attr("class", "bar-group")
     .attr("transform", d => `translate(${xScale(d.year)}, 0)`);
 
-    barsEnter.append("rect")
+  barsEnter.append("rect")
     .merge(bars.select(".male-bar"))
     .attr("class", "male-bar")
     .attr("x", 0)
@@ -126,15 +133,14 @@ function updateVisualization() {
     .attr("height", d => height - yScale(d.male))
     .attr("fill", "#1e81b0")
     .on("mouseover", (event, d) => {
-      barsTooltip.style("visibility", "visible")
+      tooltip.style("visibility", "visible")
         .html(`Year: ${d.year}<br>Exhibitions with Male Participants: ${d.male}`);
     })
     .on("mousemove", event => {
-      barsTooltip.style("top", (event.pageY + 5) + "px")
+      tooltip.style("top", (event.pageY + 5) + "px")
         .style("left", (event.pageX + 5) + "px");
     })
-    .on("mouseout", () => barsTooltip.style("visibility", "hidden"));
-
+    .on("mouseout", () => tooltip.style("visibility", "hidden"));
 
   barsEnter.append("rect")
     .merge(bars.select(".female-bar"))
@@ -145,14 +151,14 @@ function updateVisualization() {
     .attr("height", d => height - yScale(d.female))
     .attr("fill", "#f1a7c1")
     .on("mouseover", (event, d) => {
-      barsTooltip.style("visibility", "visible")
+      tooltip.style("visibility", "visible")
         .html(`Year: ${d.year}<br>Exhibitions with Female Participants: ${d.female}`);
     })
     .on("mousemove", event => {
-      barsTooltip.style("top", (event.pageY + 5) + "px")
+      tooltip.style("top", (event.pageY + 5) + "px")
         .style("left", (event.pageX + 5) + "px");
     })
-    .on("mouseout", () => barsTooltip.style("visibility", "hidden"));
+    .on("mouseout", () => tooltip.style("visibility", "hidden"));
 
   svg.selectAll(".trendline").remove();
 
