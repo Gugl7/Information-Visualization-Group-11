@@ -165,6 +165,11 @@ function addBubblesAndBrush(aggrData, scatter, rangeX, rangeY, yAxis, bubbleColo
     // Sort the data based on radius in descending order
     const sortedData = aggrData.sort((a, b) => radiusBubbleScale(b.totalArtists) - radiusBubbleScale(a.totalArtists));
 
+    scatter
+        .append("g")
+        .attr("class", "brush")
+        .call(brush);
+
     // VENUE BUBBLES
     scatter
         .selectAll("circle")
@@ -184,21 +189,6 @@ function addBubblesAndBrush(aggrData, scatter, rangeX, rangeY, yAxis, bubbleColo
         .on("mouseover", function (event, d) {
             showTooltip(event, d, exhibitionCityVenueMap);
         });
-
-    scatter
-        .append("g")
-        .attr("class", "brush")
-        .call(brush);
-
-    // Make bubbles interactive
-    scatter.selectAll("circle")
-        .style("pointer-events", "all");
-    scatter.select(".brush")
-        .lower();
-    scatter.select("grid")
-        .lower();
-
-
 }
 
 function getAggregatedData(venueData) {

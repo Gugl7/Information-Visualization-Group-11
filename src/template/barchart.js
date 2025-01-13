@@ -2,7 +2,7 @@ let width = 800;
 let height = 200;
 let margin = { top: 20, right: 30, bottom: 50, left: 70 };
 
-let svg = d3.select("#chart")
+let svg = d3.select("#bar-chart")
   .append("svg")
   .attr("width", width + margin.left + margin.right)
   .attr("height", height + margin.top + margin.bottom)
@@ -76,7 +76,7 @@ d3.dsv(",", "../../data/processed_data.csv")
       .attr("x", width / 2)
       .attr("y", height + margin.bottom - 10)
       .attr("text-anchor", "middle")
-      .style("font-size", "12px")
+      .style("font-size", "14px")
       .style("font-family", "Arial")
       .text("Year");
 
@@ -85,7 +85,7 @@ d3.dsv(",", "../../data/processed_data.csv")
       .attr("y", -margin.left + 20)
       .attr("transform", "rotate(-90)")
       .attr("text-anchor", "middle")
-      .style("font-size", "12px")
+      .style("font-size", "14px")
       .style("font-family", "Arial")
       .text("Number of Exhibitions");
 
