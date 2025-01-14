@@ -25,7 +25,7 @@ var venuesTooltip = d3.select("body")
     .append("div")
     .attr("id", "venueTooltip")
 
-var barsTooltip = d3.select("body")
+var barTooltip = d3.select("body")
     .append("div")
     .attr("id", "barTooltip")
 

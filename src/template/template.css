@@ -192,7 +192,7 @@
         font: 14px var(--sans-serif);
     }
 
-    #barTooltip {
+    #barsTooltip {
         position: absolute;
         background-color: white;
         border: 1px solid #ccc;

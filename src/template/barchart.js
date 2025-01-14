@@ -125,14 +125,14 @@ function updateVisualization() {
     .attr("height", d => height - yScale(d.male))
     .attr("fill", "#1e81b0")
     .on("mouseover", (event, d) => {
-      barsTooltip.style("visibility", "visible")
+      barTooltip.style("visibility", "visible")
         .html(`Year: ${d.year}<br>Exhibitions with Male Participants: ${d.male}`);
     })
     .on("mousemove", event => {
-      barsTooltip.style("top", (event.pageY + 5) + "px")
+      barTooltip.style("top", (event.pageY + 5) + "px")
         .style("left", (event.pageX + 5) + "px");
     })
-    .on("mouseout", () => barsTooltip.style("visibility", "hidden"));
+    .on("mouseout", () => barTooltip.style("visibility", "hidden"));
 
   barsEnter.append("rect")
     .merge(bars.select(".female-bar"))
@@ -143,14 +143,14 @@ function updateVisualization() {
     .attr("height", d => height - yScale(d.female))
     .attr("fill", "#f1a7c1")
     .on("mouseover", (event, d) => {
-      barsTooltip.style("visibility", "visible")
+      barTooltip.style("visibility", "visible")
         .html(`Year: ${d.year}<br>Exhibitions with Female Participants: ${d.female}`);
     })
     .on("mousemove", event => {
-      barsTooltip.style("top", (event.pageY + 5) + "px")
+      barTooltip.style("top", (event.pageY + 5) + "px")
         .style("left", (event.pageX + 5) + "px");
     })
-    .on("mouseout", () => barsTooltip.style("visibility", "hidden"));
+    .on("mouseout", () => barTooltip.style("visibility", "hidden"));
 
   svg.selectAll(".trendline").remove();
 

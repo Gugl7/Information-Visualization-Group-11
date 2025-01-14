@@ -131,7 +131,7 @@ function addMapPiesBubblesTooltip() {
 
                 createMapPieCharts(group, cx, cy, pieData, map_radiusScale(d.totalPaintings) / map_zoomLevel);
 
-                createMapTooltip(group, `
+                mapTooltip(group, `
                 <table>
                     ${locationContent}
                     <hr style="border: 0; margin:5px 0; padding: 0">
@@ -149,7 +149,7 @@ function addMapPiesBubblesTooltip() {
 
                 createMapBubbles(group, cx, cy, radius, d.country, className);
 
-                createMapTooltip(group, `
+                mapTooltip(group, `
                 <table>
                     ${locationContent}
                     <hr style="border: 0; margin:5px 0; padding: 0">
@@ -272,7 +272,7 @@ function addMapLegend() {
     }
 }
 
-const createMapTooltip = (group, content) => {
+const mapTooltip = (group, content) => {
     group.on("mouseover", () => {
         mapTooltip.style("visibility", "visible").html(content);
     })
