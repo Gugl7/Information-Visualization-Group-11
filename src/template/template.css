@@ -204,6 +204,10 @@
         box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
       }
 
+    #mapTooltip {
+        z-index: 1000;
+    }
+
     #legend-container, #legend-container-2 {
         display: flex;
         flex-wrap: wrap;

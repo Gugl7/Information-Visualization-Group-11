@@ -17,9 +17,6 @@ const tooltip = d3.select("body").append("div")
     .style("padding", "5px")
     .style("border-radius", "3px");
 
-const mapTooltip = d3.select("body")
-    .append("div")
-    .attr("id", "mapTooltip")
 
 var venuesTooltip = d3.select("body")
     .append("div")
@@ -29,6 +26,15 @@ var barTooltip = d3.select("body")
     .append("div")
     .attr("id", "barTooltip")
 
+const mapTooltip = d3.select("body")
+    .append("div")
+    .attr("id", "mapTooltip")
+    .style("position", "absolute")
+    .style("visibility", "hidden")
+    .style("background-color", "#fff")
+    .style("border", "1px solid #ccc")
+    .style("padding", "5px")
+    .style("border-radius", "3px");
 
 // DOM Elements for controls
 const yearSlider = document.getElementById("year-slider");
