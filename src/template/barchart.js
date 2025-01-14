@@ -9,14 +9,6 @@ let svg = d3.select("#chart")
   .append("g")
   .attr("transform", `translate(${margin.left},${margin.top})`);
 
-const barsTooltipooltip = d3.select("body").append("div")
-  .attr("class", "tooltip")
-  .style("position", "absolute")
-  .style("visibility", "hidden")
-  .style("background-color", "#fff")
-  .style("border", "1px solid #ccc")
-  .style("padding", "5px")
-  .style("border-radius", "3px");
 
 // Filteroptionen
 let currentGenderFilter = "both";  // "both", "M" oder "F"
@@ -133,14 +125,14 @@ function updateVisualization() {
     .attr("height", d => height - yScale(d.male))
     .attr("fill", "#1e81b0")
     .on("mouseover", (event, d) => {
-      tooltip.style("visibility", "visible")
+      barsTooltip.style("visibility", "visible")
         .html(`Year: ${d.year}<br>Exhibitions with Male Participants: ${d.male}`);
     })
     .on("mousemove", event => {
-      tooltip.style("top", (event.pageY + 5) + "px")
+      barsTooltip.style("top", (event.pageY + 5) + "px")
         .style("left", (event.pageX + 5) + "px");
     })
-    .on("mouseout", () => tooltip.style("visibility", "hidden"));
+    .on("mouseout", () => barsTooltip.style("visibility", "hidden"));
 
   barsEnter.append("rect")
     .merge(bars.select(".female-bar"))
@@ -151,14 +143,14 @@ function updateVisualization() {
     .attr("height", d => height - yScale(d.female))
     .attr("fill", "#f1a7c1")
     .on("mouseover", (event, d) => {
-      tooltip.style("visibility", "visible")
+      barsTooltip.style("visibility", "visible")
         .html(`Year: ${d.year}<br>Exhibitions with Female Participants: ${d.female}`);
     })
     .on("mousemove", event => {
-      tooltip.style("top", (event.pageY + 5) + "px")
+      barsTooltip.style("top", (event.pageY + 5) + "px")
         .style("left", (event.pageX + 5) + "px");
     })
-    .on("mouseout", () => tooltip.style("visibility", "hidden"));
+    .on("mouseout", () => barsTooltip.style("visibility", "hidden"));
 
   svg.selectAll(".trendline").remove();
 
