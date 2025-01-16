@@ -1,9 +1,10 @@
-let barChart_margin = { top: 20, right: 30, bottom: 50, left: 70 };
-let barChart_width = document.querySelector(".bar-chart-container").clientWidth - barChart_margin.left - barChart_margin.right;
-let barChart_height = 200;
+// Bar Chart Configurations
+const barChart_margin = { top: 20, right: 30, bottom: 50, left: 70 };
+const barChart_width = document.querySelector(".bar-chart-container").clientWidth - barChart_margin.left - barChart_margin.right;
+const barChart_height = 200;
 
-
-let svg = d3.select("#bar-chart")
+// SVG Initialization
+const svg = d3.select("#bar-chart")
   .append("svg")
   .attr("width", barChart_width + barChart_margin.left + barChart_margin.right)
   .attr("height", barChart_height + barChart_margin.top + barChart_margin.bottom)
@@ -20,8 +21,10 @@ d3.select("#gender-select").on("change", function () {
   updateBarChart();
 });
 
-// Global data variable
+// Data and Scales
 let data = [];
+const xScale = d3.scaleBand().range([0, barChart_width]).padding(0.1);
+const yScale = d3.scaleLinear().range([barChart_height, 0]);
 
 // Load CSV and aggregate data
 d3.dsv(",", "../../data/processed_data.csv")
@@ -38,12 +41,8 @@ d3.dsv(",", "../../data/processed_data.csv")
           const eId = d['e.id'];  // Unique exhibition ID
           const gender = d['a.gender'];  // gender of the artist
 
-          if (gender === 'M') {
-            maleSet.add(eId);
-          }
-          if (gender === 'F') {
-            femaleSet.add(eId);
-          }
+          if (gender === 'M') maleSet.add(eId);
+          if (gender === 'F') femaleSet.add(eId);
         });
 
         return {
@@ -65,6 +64,13 @@ d3.dsv(",", "../../data/processed_data.csv")
     xScale.domain(data.map(d => d.year));
     yScale.domain([0, d3.max(data, d => Math.max(d.male, d.female))]).nice();
 
+    drawAxes();
+    addHorizontalGridlines();
+    updateBarChart();
+});
+
+// Draw Axes
+function drawAxes() {
     svg.append("g")
       .attr("transform", `translate(0,${barChart_height})`)
       .call(d3.axisBottom(xScale));
@@ -86,21 +92,26 @@ d3.dsv(",", "../../data/processed_data.csv")
       .attr("text-anchor", "middle")
       .style("font-size", "14px")
       .text("Number of Exhibitions");
+}
 
-    updateBarChart();
-  });
+// Add Horizontal Gridlines
+function addHorizontalGridlines() {
+    svg.append("g")
+        .attr("class", "grid")
+        .selectAll("line")
+        .data(yScale.ticks())
+        .enter()
+        .append("line")
+        .attr("x1", 0)
+        .attr("x2", barChart_width)
+        .attr("y1", d => yScale(d))
+        .attr("y2", d => yScale(d))
+        .attr("stroke", "#ccc")
+        .attr("stroke-dasharray", "4")
+        .attr("stroke-width", 0.8);
+}
 
-const xScale = d3.scaleBand()
-  .range([0, barChart_width])
-  .padding(0.1);
-
-const yScale = d3.scaleLinear()
-  .range([barChart_height, 0]);
-
-
-// Call the function after creating the axis
-addHorizontalGridlines();
-
+// Update Bar Chart
 function updateBarChart() {
 
   const filteredData = data.map(d => ({
@@ -127,19 +138,9 @@ function updateBarChart() {
     .attr("width", xScale.bandwidth() / 3)
     .attr("height", d => barChart_height - yScale(d.male))
     .attr("fill", "#1e81b0")
-    .on("mouseover", (event, d) => {
-      barTooltip.style("visibility", "visible")
-          .html(`<strong>Male Artists</strong>
-            <table style="margin: 5px 0">
-            <tr><td>Year:</td><td style='text-align: right;'>${d.year}</td></tr>
-            <tr><td>Exhibitions:</td><td style='text-align: right;'>${d.male}</td></tr>
-            </table>`);
-    })
-    .on("mousemove", event => {
-      barTooltip.style("top", (event.pageY + 5) + "px")
-        .style("left", (event.pageX + 5) + "px");
-    })
-    .on("mouseout", () => barTooltip.style("visibility", "hidden"));
+    .on("mouseover", handleMouseOver("Male Artists"))
+    .on("mousemove", handleMouseMove)
+    .on("mouseout", handleMouseOut);
 
   barsEnter.append("rect")
     .merge(bars.select(".female-bar"))
@@ -149,20 +150,15 @@ function updateBarChart() {
     .attr("width", xScale.bandwidth() / 3)
     .attr("height", d => barChart_height - yScale(d.female))
     .attr("fill", "#f1a7c1")
-    .on("mouseover", (event, d) => {
-      barTooltip.style("visibility", "visible")
-        .html(`<strong>Female Artists</strong>
-          <table style="margin: 5px 0">
-            <tr><td>Year:</td><td style='text-align: right;'>${d.year}</td></tr>
-            <tr><td>Exhibitions:</td><td style='text-align: right;'>${d.female}</td></tr>
-          </table>`);
-    })
-    .on("mousemove", event => {
-      barTooltip.style("top", (event.pageY + 5) + "px")
-        .style("left", (event.pageX + 5) + "px");
-    })
-    .on("mouseout", () => barTooltip.style("visibility", "hidden"));
+    .on("mouseover", handleMouseOver("Female Artists"))
+    .on("mousemove", handleMouseMove)
+    .on("mouseout", handleMouseOut);
 
+    addTrendline(filteredData);
+}
+
+// Add Trendline
+function addTrendline(filteredData) {
   svg.selectAll(".trendline").remove();
 
   if (currentGenderFilter !== "both") {
@@ -185,19 +181,23 @@ function updateBarChart() {
   }
 }
 
-function addHorizontalGridlines() {
-    svg.append("g")
-        .attr("class", "grid")
-        .selectAll("line")
-        .data(yScale.ticks())
-        .enter()
-        .append("line")
-        .attr("x1", 0)
-        .attr("x2", barChart_width)
-        .attr("y1", d => yScale(d))
-        .attr("y2", d => yScale(d))
-        .attr("stroke", "#ccc")
-        .attr("stroke-dasharray", "4")
-        .attr("stroke-width", 0.8);
+// Tooltip Handlers
+function handleMouseOver(label) {
+    return (event, d) => {
+        barTooltip.style("visibility", "visible")
+            .html(`<strong>${label}</strong>
+        <table style="margin: 5px 0">
+          <tr><td>Year:</td><td style='text-align: right;'>${d.year}</td></tr>
+          <tr><td>Exhibitions:</td><td style='text-align: right;'>${currentGenderFilter === "M" ? d.male : d.female}</td></tr>
+        </table>`);
+    };
 }
 
+function handleMouseMove(event) {
+    barTooltip.style("top", (event.pageY + 5) + "px")
+        .style("left", (event.pageX + 5) + "px");
+}
+
+function handleMouseOut() {
+    barTooltip.style("visibility", "hidden");
+}

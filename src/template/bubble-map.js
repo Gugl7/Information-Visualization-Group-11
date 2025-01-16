@@ -249,8 +249,8 @@ function addMapLegend() {
 
         // LEGEND: Pie Chart Colors
         const pieColors = [
-            {color: "#418fc7", label: "Male"},
-            {color: "#ea8db1", label: "Female"}
+            {color: "#1e81b0", label: "Male"},
+            {color: "#f1a7c1", label: "Female"}
         ];
 
         // LEGEND: Color Rectangles
@@ -301,8 +301,8 @@ const createMapPieCharts = (group, cx, cy, pieData, radius) => {
         .data(pie(pieData))
         .join("path")
         .attr("d", arc)
-        .attr("fill", d => d3.color(d.data.gender === "Female" ? "#ea8db1" : "#418fc7").copy({opacity: 0.4}))
-        .attr("stroke", d => d3.color(d.data.gender === "Female" ? "#ea8db1" : "#418fc7").copy({opacity: 0.8}))
+        .attr("fill", d => d3.color(d.data.gender === "Female" ? "#f1a7c1" : "#1e81b0").copy({opacity: 0.4}))
+        .attr("stroke", d => d3.color(d.data.gender === "Female" ? "#f1a7c1" : "#1e81b0").copy({opacity: 0.8}))
         .attr("stroke-width", 2 / map_zoomLevel);
 };
 
