@@ -72,7 +72,7 @@ d3.dsv(";", "../../data/artvis_dump_NEW-semicolon.csv").then(loadedData => {
     groupedData = d3.group(filteredData, d => d["e.startdate"], d => d["e.city"], d => d["e.venue"]);
     updateBubbleChart();
 }).catch(error => {
-    console.error("Fehler beim Laden der CSV:", error);
+    console.error("Error loading CSV:", error);
 });
 
 function idled() {

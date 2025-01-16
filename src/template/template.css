@@ -9,49 +9,42 @@ html {
 
 body {
     font: 17px/1.5 var(--serif);
-    max-width: var(--observablehq-max-width);
+    max-width: var(--max-width);
     margin: auto;
 }
 
-#observablehq-header {
+#header {
     position: fixed;
     top: 0;
-    left: calc(max(0rem, (100vw - var(--observablehq-max-width)) / 2) + var(--observablehq-inset-left) + 2rem);
-    right: calc(max(0rem, (100vw - var(--observablehq-max-width)) / 2) + var(--observablehq-inset-right) + 2rem);
+    left: calc(max(0rem, (100vw - var(--max-width)) / 2) + var(--inset-left) + 2rem);
+    right: calc(max(0rem, (100vw - var(--max-width)) / 2) + var(--inset-right) + 2rem);
     z-index: 2;
     display: flex;
     align-items: center;
     gap: .5rem;
-    height: var(--observablehq-header-height);
+    height: var(--header-height);
     margin: 0 -2rem 2rem;
     padding: 1rem 2rem .5rem;
     background: var(--theme-background);
-    border-bottom: solid 1px var(--theme-foreground-faintest);
+    border-bottom: solid 1px var(--theme-foreground-faint);
 
 }
 
-#observablehq-main {
+#main {
     min-height: calc(100vh - 20rem);
     position: relative;
     z-index: 0;
     container-type: inline-size
 }
 
-#observablehq-header ~ #observablehq-main {
-    margin-top: calc(var(--observablehq-header-height) + 1.5rem + 2rem)
+#header ~ #main {
+    margin-top: calc(var(--header-height) + 1.5rem + 2rem)
 }
 
-#observablehq-center {
+#center {
     margin: 2rem;
-    --observablehq-inset-left: 0rem;
-    --observablehq-inset-right: 0rem
-}
-
-#observablehq-footer {
-    display: block;
-    margin-top: 10rem;
-    font: 12px var(--sans-serif);
-    color: var(--theme-foreground-faint)
+    --inset-left: 0rem;
+    --inset-right: 0rem
 }
 
 /* ==================== Typografie ==================== */
@@ -73,33 +66,6 @@ h1 + h2 {
 
 h2 + p{
     margin-top: 0
-}
-
-.link {
-    fill: none;
-    stroke: #ccc;
-    stroke-width: 1.5px;
-}
-
-a[href] {
-    color: var(--theme-foreground-focus);
-    text-decoration: none
-}
-
-a[href]:hover, a[href]:focus {
-    text-decoration: underline
-}
-
-.big {
-    font: var(--font-big)
-}
-
-.small {
-    font: var(--font-small)
-}
-
-.muted {
-    color: var(--theme-foreground-muted)
 }
 
 /* ==================== Titel und Beschriftung ==================== */
@@ -138,7 +104,7 @@ h2, p {
     width: 100%;
     max-height: 500px;
     border-radius: 8px;
-    border: solid 1px var(--theme-foreground-faintest);
+    border: solid 1px var(--theme-foreground-faint);
     overflow: visible;
 }
 
@@ -167,7 +133,7 @@ h2, p {
 
 /* ==================== V-Chart: Bubbles ==================== */
 .bubbles {
-    stroke-width: 1.5px;
+    stroke-width: 2px;
     stroke: white;
 }
 
@@ -184,7 +150,7 @@ h2, p {
     flex-direction: column;
     justify-content: start;
     background: #fcfcfc;
-    border: solid 1px var(--theme-foreground-faintest);
+    border: solid 1px var(--theme-foreground-faint);
     border-radius: 8px;
     padding: 1rem;
     width: 15%;
@@ -214,22 +180,21 @@ h2, p {
     gap: 1rem;
 }
 
-/* ==================== V-Chart: Legend ==================== */
-.legend-background, .legend-background-map {
+/* ==================== V-Chart & MAP: Legend ==================== */
+.legend-background-venue, .legend-background-map {
     fill: #fcfcfc;
     opacity: 0.85;
     stroke: #ccc;
     border: 2px solid #ccc;
     border-radius: 8px;
+    width: 180px;
 }
 
-.legend-background {
-    width: 180px;
+.legend-background-venue {
     height: 150px;
 }
 
 .legend-background-map {
-    width: 180px;
     height: 220px;
 }
 
@@ -247,7 +212,7 @@ h2, p {
     transition: opacity 0.1s ease-in-out;
 }
 
-/* ==================== Tabellen ==================== */
+/* ==================== Table ==================== */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -266,7 +231,7 @@ td:last-child {
 }
 
 tr:not(:last-child) {
-    border-bottom: solid 1px var(--theme-foreground-faintest)
+    border-bottom: solid 1px var(--theme-foreground-faint)
 }
 
 /* ==================== Lines ==================== */
@@ -293,8 +258,8 @@ line {
 }
 
 .card {
-    background: var(--theme-background-alt);
-    border: solid 1px var(--theme-foreground-faintest);
+    background: var(--theme-background-b);
+    border: solid 1px var(--theme-foreground-faint);
     border-radius: 8px;
     padding: 1rem;
     justify-content: center;
@@ -314,6 +279,24 @@ line {
     margin-top: 1rem
 }
 
+
+/* ========================================================== */
+/* ====================== FILTER PANEL ====================== */
+/* ========================================================== */
+
+#filter-panel.grid  {
+    padding: 0;
+}
+
+.outer-filter {
+    display: flex;
+    gap: 1rem;
+    align-content: center;
+    justify-content: center;
+    padding: 0;
+    margin: 1rem 0;
+}
+
 /* ==================== Gender Selection ==================== */
 select {
     background: none;
@@ -325,7 +308,7 @@ select {
     margin: 0;
 }
 
-/* ==================== Slider ==================== */
+/* ======================= Year Slider ======================= */
 #year-slider {
     width: 100%;
     margin: 20px 0;
@@ -356,6 +339,10 @@ select {
     border: 2px solid white;
 }
 
+.slider-container {
+    padding: 1rem 0 2rem 0;
+    width: 60%;
+}
 
 .slider-wrapper {
     position: relative;
@@ -395,7 +382,7 @@ select {
     border-radius: 50%;
 }
 
-/* ==================== Switch Button ==================== */
+/* ====================== SWITCH BUTTON ====================== */
 .switch-highlight {
     position: absolute;
     top: 0;
@@ -411,9 +398,9 @@ select {
 .switch-container {
     display: flex;
     position: relative;
-    border: solid 5px var(--theme-background-a);
+    border: solid 5px var(--theme-background);
     border-radius: 9px;
-    background-color: var(--theme-background-a);
+    background-color: var(--theme-background);
     width: 270px;
     height: 38px;
     z-index: 0;
@@ -463,7 +450,7 @@ select {
     background-color: #fff;
     color: #555;
     text-align: center;
-    border: solid 1px var(--theme-foreground-faintest);
+    border: solid 1px var(--theme-foreground-faint);
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     padding: 5px 10px;
@@ -488,43 +475,27 @@ select {
     opacity: 1;
 }
 
+
 /* ==================== Variables and Theme Setup  ==================== */
 :root {
-    --theme-caret: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M5 7L8.125 9.5L11.25 7' stroke='black' stroke-width='1.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
-    --theme-toggle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='m10.5,11 2.5-3-2.5-3 M6,8h7' fill='none' stroke='black' stroke-width='2'/%3E%3Crect x='2' y='2' fill='currentColor' height='12' rx='0.5' width='2'/%3E%3C/svg%3E");
-    --theme-magnifier: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath stroke='currentColor' stroke-width='2' fill='none' d='M15,15L10.5,10.5a3,3 0 1,0 -6 -6a3,3 0 1,0 6 6'%3E%3C/path%3E%3C/svg%3E");
-    --observablehq-max-width: 1440px;
-    --observablehq-header-height: 2.2rem;
-    --font-big: 700 32px/1 var(--sans-serif);
-    --font-small: 14px var(--sans-serif);
-    --monospace: Menlo, Consolas, monospace;
-    --monospace-font: 14px/1.5 var(--monospace);
+    --max-width: 1440px;
+    --header-height: 2.2rem;
     --serif: "Source Serif 4", "Iowan Old Style", "Apple Garamond", "Palatino Linotype", "Times New Roman", "Droid Serif", Times, serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     --sans-serif: -apple-system, BlinkMacSystemFont, "avenir next", avenir, helvetica, "helvetica neue", ubuntu, roboto, noto, "segoe ui", arial, sans-serif;
-    --theme-blue: #4269d0;
-    --theme-green: #3ca951;
-    --theme-red: #ff725c;
-    --theme-yellow: #efb118;
     scroll-padding-top: 2.5rem;
 }
 
-:root:has(#observablehq-header) {
-    scroll-padding-top: calc(var(--observablehq-header-height) + 2.5rem)
+:root:has(#header) {
+    scroll-padding-top: calc(var(--header-height) + 2.5rem)
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --theme-background-a: color-mix(in srgb, var(--theme-foreground) 4%, var(--theme-background-b));
-        --theme-background: var(--theme-background-a);
-        --theme-background-alt: var(--theme-background-b);
-        --theme-foreground-alt: color-mix(in srgb, var(--theme-foreground) 90%, var(--theme-background-b));
-        --theme-foreground-muted: color-mix(in srgb, var(--theme-foreground) 60%, var(--theme-background-b));
-        --theme-foreground-faint: color-mix(in srgb, var(--theme-foreground) 50%, var(--theme-background-b));
-        --theme-foreground-fainter: color-mix(in srgb, var(--theme-foreground) 30%, var(--theme-background-b));
-        --theme-foreground-faintest: color-mix(in srgb, var(--theme-foreground) 14%, var(--theme-background-b));
         --theme-foreground: #161616;
-        --theme-foreground-focus: oklch(.712564 .257662 265.758);
+        --theme-background: color-mix(in srgb, var(--theme-foreground) 4%, var(--theme-background-b));
         --theme-background-b: #ffffff;
+        --theme-foreground-alt: color-mix(in srgb, var(--theme-foreground) 90%, var(--theme-background-b));
+        --theme-foreground-faint: color-mix(in srgb, var(--theme-foreground) 14%, var(--theme-background-b));
         color-scheme: dark
     }
 }
@@ -535,23 +506,6 @@ body::after {
     height: 500px;
 }
 
-.slider-container {
-    padding: 1rem 0 2rem 0;
-    width: 60%;
-}
-
-.outer-filter {
-    display: flex;
-    gap: 1rem;
-    align-content: center;
-    justify-content: center;
-    padding: 0;
-    margin: 1rem 0;
-}
-
-#filter-panel.grid  {
-    padding: 0;
-}
 
 @media (max-width: 1100px) {
 

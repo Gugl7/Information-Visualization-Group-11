@@ -422,7 +422,7 @@ function addLegend() {
 
     // Add a white background to the legend
     legendVenue.append("rect")
-        .attr("class", "legend-background")
+        .attr("class", "legend-background-venue")
         .attr("rx", 8)
         .attr("ry", 8);
 
