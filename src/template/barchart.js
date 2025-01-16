@@ -2,13 +2,12 @@ let width = 800;
 let height = 200;
 let margin = { top: 20, right: 30, bottom: 50, left: 70 };
 
-let svg = d3.select("#bar-chart")
+let svg = d3.select("#chart")
   .append("svg")
   .attr("width", width + margin.left + margin.right)
   .attr("height", height + margin.top + margin.bottom)
   .append("g")
   .attr("transform", `translate(${margin.left},${margin.top})`);
-
 
 
 // Filteroptionen
@@ -76,7 +75,7 @@ d3.dsv(",", "../../data/processed_data.csv")
       .attr("x", width / 2)
       .attr("y", height + margin.bottom - 10)
       .attr("text-anchor", "middle")
-      .style("font-size", "14px")
+      .style("font-size", "12px")
       .style("font-family", "Arial")
       .text("Year");
 
@@ -85,7 +84,7 @@ d3.dsv(",", "../../data/processed_data.csv")
       .attr("y", -margin.left + 20)
       .attr("transform", "rotate(-90)")
       .attr("text-anchor", "middle")
-      .style("font-size", "14px")
+      .style("font-size", "12px")
       .style("font-family", "Arial")
       .text("Number of Exhibitions");
 
@@ -117,7 +116,7 @@ function updateVisualization() {
     .attr("class", "bar-group")
     .attr("transform", d => `translate(${xScale(d.year)}, 0)`);
 
-    barsEnter.append("rect")
+  barsEnter.append("rect")
     .merge(bars.select(".male-bar"))
     .attr("class", "male-bar")
     .attr("x", 0)
@@ -126,20 +125,14 @@ function updateVisualization() {
     .attr("height", d => height - yScale(d.male))
     .attr("fill", "#1e81b0")
     .on("mouseover", (event, d) => {
-      barsTooltip.style("visibility", "visible")
-
-        .html(`<strong>Male Artists</strong>
-            <table style="margin: 5px 0">
-            <tr><td>Year:</td><td style='text-align: right;'>${d.year}</td></tr>
-            <tr><td>Exhibitions:</td><td style='text-align: right;'>${d.male}</td></tr>
-            </table>`);
+      barTooltip.style("visibility", "visible")
+        .html(`Year: ${d.year}<br>Exhibitions with Male Participants: ${d.male}`);
     })
     .on("mousemove", event => {
-      barsTooltip.style("top", (event.pageY + 5) + "px")
+      barTooltip.style("top", (event.pageY + 5) + "px")
         .style("left", (event.pageX + 5) + "px");
     })
-    .on("mouseout", () => barsTooltip.style("visibility", "hidden"));
-
+    .on("mouseout", () => barTooltip.style("visibility", "hidden"));
 
   barsEnter.append("rect")
     .merge(bars.select(".female-bar"))
@@ -150,18 +143,14 @@ function updateVisualization() {
     .attr("height", d => height - yScale(d.female))
     .attr("fill", "#f1a7c1")
     .on("mouseover", (event, d) => {
-      barsTooltip.style("visibility", "visible")
-        .html(`<strong>Female Artists</strong>
-            <table style="margin: 5px 0">
-            <tr><td>Year:</td><td style='text-align: right;'>${d.year}</td></tr>
-            <tr><td>Exhibitions:</td><td style='text-align: right;'>${d.female}</td></tr>
-            </table>`);
+      barTooltip.style("visibility", "visible")
+        .html(`Year: ${d.year}<br>Exhibitions with Female Participants: ${d.female}`);
     })
     .on("mousemove", event => {
-      barsTooltip.style("top", (event.pageY + 5) + "px")
+      barTooltip.style("top", (event.pageY + 5) + "px")
         .style("left", (event.pageX + 5) + "px");
     })
-    .on("mouseout", () => barsTooltip.style("visibility", "hidden"));
+    .on("mouseout", () => barTooltip.style("visibility", "hidden"));
 
   svg.selectAll(".trendline").remove();
 
