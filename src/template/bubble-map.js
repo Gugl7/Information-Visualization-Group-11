@@ -56,6 +56,9 @@ function findMinAndMaxPaintingsGlobalMap() {
     };
 }
 
+/**
+ * Updates bubble / pie charts on the map.
+ */
 function updateMap() {
     const map_cityData = d3.group(filterData(), d => d["e.city"]);
 
@@ -81,9 +84,11 @@ function updateMap() {
         };
     });
 
-    isMaxGlobalMap = (currentMode === "global");
+    isMaxGlobalMap = (currentMode === "fix");
 
     const countries_for_colors = Array.from(new Set(filteredData.map(d => d["e.country"])));
+
+    // Calculate max and min paintings for the current mode
 
     const max_local = d3.max(map_aggregatedData, d => d.totalPaintings)
     const min_local = d3.min(map_aggregatedData, d => d.totalPaintings);
@@ -102,6 +107,9 @@ function updateMap() {
     addMapPiesBubblesTooltip()
 }
 
+/**
+ * Adds pie charts, bubbles and tooltips to the map.
+ */
 function addMapPiesBubblesTooltip() {
 
     const sortedMapData = map_aggregatedData.sort((a, b) =>

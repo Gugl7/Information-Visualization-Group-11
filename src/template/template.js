@@ -65,17 +65,22 @@ genderFilter.addEventListener("change", function () {
 
 updateSliderLabel(document.getElementById("year-slider").value);
 
+/**
+ * Switch between "fixed" and "dynamic" scale modes for the chart display.
+ *
+ * @param {String} mode - The mode to switch to. Can be "fix" or "dynamic".
+ */
 function switchMode(mode) {
     const highlight = document.querySelector(".switch-highlight");
     const buttons = document.querySelectorAll(".switch-button");
 
-    if (mode === "global") {
-        currentMode = "global";
+    if (mode === "fix") {
+        currentMode = "fix";
         highlight.style.left = "0";
         buttons[0].classList.add("active");
         buttons[1].classList.remove("active");
-    } else if (mode === "local") {
-        currentMode = "local";
+    } else if (mode === "dynamic") {
+        currentMode = "dynamic";
         highlight.style.left = "50%";
         buttons[1].classList.add("active");
         buttons[0].classList.remove("active");

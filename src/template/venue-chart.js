@@ -1,4 +1,4 @@
-let currentMode = "global";
+let currentMode = "fix";
 var yGrid = null;
 var idleTimeout;
 let maxBubbleSize;
@@ -19,9 +19,6 @@ let chart_margin = {top: 10, right: 40, bottom: 90, left: 66}; // right: 50
 let chart_width = document.querySelector(".bubble-chart").clientWidth - chart_margin.left - chart_margin.right;
 let chart_height = 550;
 
-/**
- * Updates the width and re-renders the chart when the window is resized.
- */
 function updateChartDimensions() {
     chart_width = document.querySelector(".bubble-chart").clientWidth - chart_margin.left - chart_margin.right;
     d3.select("#bubble_chart").selectAll("*").remove();
@@ -29,16 +26,10 @@ function updateChartDimensions() {
     addLegend();
 }
 
-/**
- * Sets idleTimeout to null after the specified delay (350ms).
- */
 function idled() {
     idleTimeout = null;
 }
 
-/**
- * Finds the maximum number of unique artists and paintings across all venues.
- */
 function findMaxArtistsAndPaintingsVenue() {
 
     let result = {
@@ -80,7 +71,7 @@ function renderChart() {
         .append("g")
         .attr("transform", `translate(${chart_margin.left}, ${chart_margin.top})`);
 
-    let isMaxGlobal = (currentMode === "global");
+    let isMaxGlobal = (currentMode === "fix");
 
     // scatter: where both the circles and the brush take place
     var scatter = svgBubbleChart.append('g')
@@ -287,13 +278,6 @@ function updateScatterChart(event, scatter, brush, maxPaintings, x, y, yAxis) {
         .attr("cx", d => x(d.vcCountry) + x.bandwidth() / 2);
 }
 
-/**
- * Renders the X-axis labels and circles representing countries.
- *
- * @param {Object} svgBubbleChart - The D3 SVG element for the bubble chart.
- * @param {Object} x - The D3 x-axis scale.
- * @param {Array} countries - Array of country names for X-axis labels.
- */
 function renderXAxisLabels(svgBubbleChart, x, countries) {
 
     // X AXIS: Labels
@@ -331,11 +315,6 @@ function renderXAxisLabels(svgBubbleChart, x, countries) {
         .attr("opacity", 0.7);
 }
 
-/**
- * Renders the Y-axis label for the bubble chart.
- *
- * @param {Object} svgBubbleChart - The D3 SVG element for the bubble chart.
- */
 function renderYAxisLabels(svgBubbleChart) {
 
     // Y AXIS: Label
@@ -348,14 +327,6 @@ function renderYAxisLabels(svgBubbleChart) {
         .text("Paintings");
 }
 
-/**
- * Renders the grid lines for both X and Y axes on the bubble chart.
- *
- * @param {Object} svgBubbleChart - The D3 SVG element for the bubble chart.
- * @param {Object} scatter - The D3 scatter chart element.
- * @param {Object} x - The D3 x-axis scale.
- * @param {Object} y - The D3 y-axis scale.
- */
 function renderGridLines(svgBubbleChart, scatter, x, y) {
 
     // X AXIS GRID LINES
@@ -379,13 +350,6 @@ function renderGridLines(svgBubbleChart, scatter, x, y) {
         );
 }
 
-/**
- * Displays the tooltip with venue and exhibition details.
- *
- * @param {Event} event - The mouse event triggered by hovering over a bubble.
- * @param {Object} d - The data for the selected venue.
- * @param {Map} exhibitionCityVenueMap - A map linking exhibition details to venues.
- */
 var showTooltip = function (event, d, exhibitionCityVenueMap) {
     const {venueDetails, tableHtml} = getTooltipTable(d, exhibitionCityVenueMap);
     venuesTooltip
@@ -398,9 +362,6 @@ var showTooltip = function (event, d, exhibitionCityVenueMap) {
         .style("top", (event.pageY + 15) + "px");
 };
 
-/**
- * Hides the tooltip when the mouse leaves a bubble.
- */
 var hideTooltip = function () {
     venuesTooltip
         .transition()
@@ -483,9 +444,6 @@ function getTooltipTable(d, exhibitionCityVenueMap) {
     return {venueDetails, tableHtml};
 }
 
-/**
- * Adds a legend to the bubble chart with circles representing the number of artists per venue.
- */
 function addLegend() {
 
     d3.select("#venue_legendID").remove();

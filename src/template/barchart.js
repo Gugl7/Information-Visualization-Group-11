@@ -111,7 +111,9 @@ function addHorizontalGridlines() {
         .attr("stroke-width", 0.8);
 }
 
-// Update Bar Chart
+/**
+ * Update the bar chart based on the current filter settings
+ */
 function updateBarChart() {
 
   const filteredData = data.map(d => ({
