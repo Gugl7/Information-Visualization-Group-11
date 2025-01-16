@@ -18,30 +18,18 @@ const tooltip = d3.select("body").append("div")
     .style("border-radius", "3px");
 
 
-var venuesTooltip = d3.select("body")
-    .append("div")
-    .attr("id", "venueTooltip")
-
-var barTooltip = d3.select("body")
+const barTooltip = d3.select("body")
     .append("div")
     .attr("id", "barTooltip")
-    .style("position", "absolute")
-    .style("visibility", "hidden")
-    .style("background-color", "#fff")
-    .style("border", "1px solid #ccc")
-    .style("padding", "5px")
-    .style("border-radius", "3px");
-
 
 const mapTooltip = d3.select("body")
     .append("div")
     .attr("id", "mapTooltip")
-    .style("position", "absolute")
-    .style("visibility", "hidden")
-    .style("background-color", "#fff")
-    .style("border", "1px solid #ccc")
-    .style("padding", "5px")
-    .style("border-radius", "3px");
+
+const venuesTooltip = d3.select("body")
+    .append("div")
+    .attr("id", "venueTooltip")
+
 
 // DOM Elements for controls
 const yearSlider = document.getElementById("year-slider");

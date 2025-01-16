@@ -57,7 +57,7 @@ function renderChart() {
     const venueData = d3.group(filterData(), d => `${d["e.venue"]}__${d["e.city"]}`);
 
     const {maxArtistsGlobal, maxPaintingsGlobal} = findMaxArtistsAndPaintingsVenue();
-    const aggrData = getAggregatedData(venueData);
+    const venues_aggregatedData = getAggregatedData(venueData);
 
     d3.select("#bubble_chart").selectAll("*").remove();
 
@@ -97,11 +97,11 @@ function renderChart() {
     // ---------------------------//
 
     // BUBBLE SIZE: Prepare data and scale
-    const topBubblePaintings = d3.max(aggrData, d => d.allPaintings);
-    const topBubble = aggrData.find(d => d.allPaintings === topBubblePaintings);
+    const topBubblePaintings = d3.max(venues_aggregatedData, d => d.allPaintings);
+    const topBubble = venues_aggregatedData.find(d => d.allPaintings === topBubblePaintings);
     const totalArtistsTopBubble = topBubble ? topBubble.totalArtists : null;
 
-    maxBubbleSize = isMaxGlobal ? maxArtistsGlobal : d3.max(aggrData, d => d.totalArtists);
+    maxBubbleSize = isMaxGlobal ? maxArtistsGlobal : d3.max(venues_aggregatedData, d => d.totalArtists);
     radiusBubbleScale = d3.scaleSqrt()
         .domain([1, maxBubbleSize])
         .range([4, maxBubbleRadius]);
@@ -111,7 +111,7 @@ function renderChart() {
     // ---------------------------//
 
     // Y AXIS: Scale and maxPaintings calculation
-    const maxPaintingsLocal = d3.max(aggrData, d => d.allPaintings);
+    const maxPaintingsLocal = d3.max(venues_aggregatedData, d => d.allPaintings);
     const radiusForVenue = totalArtistsTopBubble ? radiusBubbleScale(totalArtistsTopBubble) : null;
 
     const maxBubbleRadiusLocal = topBubblePaintings / (chart_width / (radiusForVenue * 1.33));
@@ -143,7 +143,7 @@ function renderChart() {
 
     renderGridLines(svgBubbleChart, scatter, rangeX, rangeY);
 
-    addBubblesAndBrush(aggrData, scatter, rangeX, rangeY, yAxis, bubbleColor, maxPaintings);
+    addBubblesAndBrush(venues_aggregatedData, scatter, rangeX, rangeY, yAxis, bubbleColor, maxPaintings);
 
 }
 

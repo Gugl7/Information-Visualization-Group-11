@@ -35,46 +35,48 @@
         <div class="card-container" style="font: var(--sans-serif);">
 
             <!-- Lia: BAR CHART -->
-            <div class="card" style="overflow: visible; display: block; flex-direction: column;">
+            <div class="card" style=" justify-content: center">
                 <div class="chart-title" style="padding-bottom: 1rem">
                     <h2>Gender Representation in Exhibitions</h2>
+                    <hr style="border: 0.5px solid var(--theme-foreground-faintest); width: 100%; margin: 0">
                 </div>
 
-               
-                <!-- Geschlechtsfilter -->
-                <div id="filters">
-                    <label for="gender-select">Artist Gender:</label>
-                    <select id="gender-select">
-                        <option value="both">Both</option>
-                        <option value="M">Male</option>
-                        <option value="F">Female</option>
-                    </select>
-                </div>
-
-                <!-- Bar Chart Container -->
-                <div id="chart" style="width: 100%; height: 250px; position: relative;"></div>
-              <!-- Legende -->
-                 <div id="legend-card" style="display: flex; gap: 1rem; padding-top: 1rem; align-items: center;">
-                    <label>Bar Chart Colors:</label>
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <div style="width: 10px; height: 10px; background-color: #1e81b0;"></div>
-                        <span>Male</span>
+                <!-- BAR CHART: Gender Filter -->
+                <div id="filters" style="display: flex; gap: 1rem; align-items: center; justify-content: center">
+                    <div style="width: 270px; display: flex; gap:1rem">
+                        <label for="gender-select" style="font: 17px/1.5 var(--sans-serif)">Artist Gender: </label>
+                        <select id="gender-select">
+                            <option value="both">Both</option>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                        </select>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <div style="width: 10px; height: 10px; background-color: #f1a7c1;"></div>
-                        <span>Female</span>
+
+
+                    <!-- BAR CHART: Legend -->
+                    <div id="legend-card"
+                         style="display: flex; gap: 1rem; align-items: center; justify-content: center">
+                        <label style="font: 17px/1.5 var(--sans-serif)">Bar Chart Colors:</label>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <div style="width: 15px; height: 15px; background-color: #1e81b0;"></div>
+                            <span style="font: 17px/1.5 var(--sans-serif)">Male</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <div style="width: 15px; height: 15px; background-color: #f1a7c1;"></div>
+                            <span style="font: 17px/1.5 var(--sans-serif)">Female</span>
+                        </div>
                     </div>
                 </div>
-                <!-- Include Bar Chart Script -->
-                <script src="https://d3js.org/d3.v7.min.js"></script>
-                <script src="barchart.js"></script>
+
+                <div class="bar-chart-container"
+                     style="display: table; margin:auto; gap: 1rem; align-items: center; justify-content: center; width: 930px">
+                    <!-- Bar Chart Container -->
+                    <div id="bar-chart" style="font: 14px var(--sans-serif)"></div>
+                </div>
             </div>
-            </div>
 
 
-        
-
-
+            <!-- Elsa: FILTER PANEL -->
             <div class="card" style="padding:0; position: sticky; top: 60px;">
                 <div style="padding: 0 1rem 0 1rem ;">
                     <h2 style="font: 17px/1.5 var(--sans-serif); padding: 1rem 0 0.5rem 0">Filtered by:
@@ -83,6 +85,7 @@
                     <hr style="border: 0.5px solid var(--theme-foreground-faintest); width: 100%; margin: 0">
                 </div>
 
+                <!-- Filter: Artist Gender -->
                 <div class="flex" id="filter-panel">
                     <div class="outer-filter" style="margin-left: 1rem">
                         <div style="width:270px; margin: auto; display: flex; gap:1rem">
@@ -95,6 +98,7 @@
                         </div>
                     </div>
 
+                    <!-- Filter: Year Slider -->
                     <div class="slider-container">
                         <label for="year-slider"></label>
                         <div class="slider-wrapper">
@@ -113,6 +117,7 @@
                         </div>
                     </div>
 
+                    <!-- Toggle Buttons: Scale -->
                     <div class="outer-filter" style="margin-right: 1rem">
                         <div class="tooltip switch-container">
                             <div class="switch-highlight"></div>
@@ -130,36 +135,42 @@
                 </div>
             </div>
 
-                <!-- WORLD MAP -->
-                <div class="card">
-                    <div class="chart-title">
-                        <div class="title-container">
-                            <h2 style="padding: 0 0 1rem 0">Distribution of Paintings by Cities</h2>
-                        </div>
-                    </div>
-                    <div id="map" style="font: 14px var(--sans-serif); overflow: hidden"></div>
-                </div>
-
-            </div>
-
-            <!--BUBBLE CHART-->
-            <div class="bubble-chart card">
-                <div class="chart-title" style="padding-bottom: 0.5rem">
+            <!-- Marko: WORLD MAP (Bubbles / Pie Charts) -->
+            <div class="card">
+                <div class="chart-title">
                     <div class="title-container">
-                        <h2>Distribution of Venues & Artists by Countries & Paintings</h2>
+                        <h2 style="padding: 0 0 1rem 0">Distribution of Paintings by Cities</h2>
                     </div>
                 </div>
-                <div id="bubble_chart" style="font: 14px var(--sans-serif); overflow: visible"></div>
+                <!-- WORLD MAP: Container -->
+                <div id="map" style="font: 14px var(--sans-serif); overflow: hidden"></div>
             </div>
 
+        </div>
 
-            <script src="venue-chart.js"></script>
+        <!-- Elsa: BUBBLE CHART-->
+        <div class="bubble-chart card">
+            <div class="chart-title" style="padding-bottom: 0.5rem">
+                <div class="title-container">
+                    <h2>Distribution of Venues & Artists by Countries & Paintings</h2>
+                </div>
+            </div>
+            <!-- BUBBLE CHART: Container -->
+            <div id="bubble_chart" style="font: 14px var(--sans-serif); overflow: hidden"></div>
+        </div>
 
     </main>
 </div>
 
+<!-- Load Script: Centralised Functionalities -->
 <script src="template.js"></script>
+
+<!-- Load Script: Bar Chart -->
+<script src="barchart.js"></script>
+<!-- Load Script: Bubble Map -->
 <script src="bubble-map.js"></script>
+<!-- Load Script: Venue Chart -->
+<script src="venue-chart.js"></script>
 
 </body>
 <footer>

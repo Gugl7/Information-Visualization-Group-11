@@ -2,7 +2,7 @@ let width = 800;
 let height = 200;
 let margin = { top: 20, right: 30, bottom: 50, left: 70 };
 
-let svg = d3.select("#chart")
+let svg = d3.select("#bar-chart")
   .append("svg")
   .attr("width", width + margin.left + margin.right)
   .attr("height", height + margin.top + margin.bottom)
@@ -10,32 +10,32 @@ let svg = d3.select("#chart")
   .attr("transform", `translate(${margin.left},${margin.top})`);
 
 
-// Filteroptionen
+// filter options
 let currentGenderFilter = "both";  // "both", "M" oder "F"
 
 // Dropdown-Eventlistener
 d3.select("#gender-select").on("change", function () {
-  currentGenderFilter = this.value; // Aktualisiere Filter basierend auf Dropdown-Wert
-  updateVisualization();
+  currentGenderFilter = this.value; // Update filter based on dropdown value
+  updateBarChart();
 });
 
-// Globale Datenvariable
+// Global data variable
 let data = [];
 
-// CSV laden und Daten aggregieren
+// Load CSV and aggregate data
 d3.dsv(",", "../../data/processed_data.csv")
   .then(loadedData => {
-    // Aggregierte Zählung für Männer und Frauen pro Jahr
+    // Aggregated count for men and women per year
     const aggregatedData = d3.rollups(
-      loadedData,  // Keine Duplikate entfernen, alle Ausstellungen werden berücksichtigt
+      loadedData,  // Do not remove duplicates, all exhibitions are taken into account
       exhibitions => {
         const maleSet = new Set();
         const femaleSet = new Set();
 
-        // Iteriere durch alle Ausstellungen und prüfe die beteiligten Künstler
+        // Iterate through all exhibitions and check the artists involved
         exhibitions.forEach(d => {
-          const eId = d['e.id'];  // Eindeutige Ausstellungs-ID
-          const gender = d['a.gender'];  // Geschlecht des Künstlers
+          const eId = d['e.id'];  // Unique exhibition ID
+          const gender = d['a.gender'];  // gender of the artist
 
           if (gender === 'M') {
             maleSet.add(eId);
@@ -50,7 +50,7 @@ d3.dsv(",", "../../data/processed_data.csv")
           female: femaleSet.size,
         };
       },
-      d => new Date(d['e.startdate']).getFullYear()  // Gruppierung nach Jahr
+      d => new Date(d['e.startdate']).getFullYear()  // grouping by year
     );
 
     data = aggregatedData.map(([year, values]) => ({
@@ -88,7 +88,7 @@ d3.dsv(",", "../../data/processed_data.csv")
       .style("font-family", "Arial")
       .text("Number of Exhibitions");
 
-    updateVisualization();
+    updateBarChart();
   });
 
 const xScale = d3.scaleBand()
@@ -98,7 +98,11 @@ const xScale = d3.scaleBand()
 const yScale = d3.scaleLinear()
   .range([height, 0]);
 
-function updateVisualization() {
+
+// Call the function after creating the axis
+addHorizontalGridlines();
+
+function updateBarChart() {
 
   const filteredData = data.map(d => ({
     year: d.year,
@@ -126,7 +130,11 @@ function updateVisualization() {
     .attr("fill", "#1e81b0")
     .on("mouseover", (event, d) => {
       barTooltip.style("visibility", "visible")
-        .html(`Year: ${d.year}<br>Exhibitions with Male Participants: ${d.male}`);
+          .html(`<strong>Male Artists</strong>
+            <table style="margin: 5px 0">
+            <tr><td>Year:</td><td style='text-align: right;'>${d.year}</td></tr>
+            <tr><td>Exhibitions:</td><td style='text-align: right;'>${d.male}</td></tr>
+            </table>`);
     })
     .on("mousemove", event => {
       barTooltip.style("top", (event.pageY + 5) + "px")
@@ -144,7 +152,11 @@ function updateVisualization() {
     .attr("fill", "#f1a7c1")
     .on("mouseover", (event, d) => {
       barTooltip.style("visibility", "visible")
-        .html(`Year: ${d.year}<br>Exhibitions with Female Participants: ${d.female}`);
+        .html(`<strong>Female Artists</strong>
+          <table style="margin: 5px 0">
+            <tr><td>Year:</td><td style='text-align: right;'>${d.year}</td></tr>
+            <tr><td>Exhibitions:</td><td style='text-align: right;'>${d.female}</td></tr>
+          </table>`);
     })
     .on("mousemove", event => {
       barTooltip.style("top", (event.pageY + 5) + "px")
@@ -173,3 +185,20 @@ function updateVisualization() {
       .attr("stroke-width", 2);
   }
 }
+
+function addHorizontalGridlines() {
+    svg.append("g")
+        .attr("class", "grid")
+        .selectAll("line")
+        .data(yScale.ticks())
+        .enter()
+        .append("line")
+        .attr("x1", 0)
+        .attr("x2", width)
+        .attr("y1", d => yScale(d))
+        .attr("y2", d => yScale(d))
+        .attr("stroke", "#ccc")
+        .attr("stroke-dasharray", "4")
+        .attr("stroke-width", 0.8);
+}
+
