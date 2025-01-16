@@ -19,6 +19,9 @@ let chart_margin = {top: 10, right: 40, bottom: 90, left: 66}; // right: 50
 let chart_width = document.querySelector(".bubble-chart").clientWidth - chart_margin.left - chart_margin.right;
 let chart_height = 550;
 
+/**
+ * Updates the width and re-renders the chart when the window is resized.
+ */
 function updateChartDimensions() {
     chart_width = document.querySelector(".bubble-chart").clientWidth - chart_margin.left - chart_margin.right;
     d3.select("#bubble_chart").selectAll("*").remove();
@@ -26,10 +29,16 @@ function updateChartDimensions() {
     addLegend();
 }
 
+/**
+ * Sets idleTimeout to null after the specified delay (350ms).
+ */
 function idled() {
     idleTimeout = null;
 }
 
+/**
+ * Finds the maximum number of unique artists and paintings across all venues.
+ */
 function findMaxArtistsAndPaintingsVenue() {
 
     let result = {
@@ -53,6 +62,9 @@ function findMaxArtistsAndPaintingsVenue() {
     return result;
 }
 
+/**
+ * Renders the bubble chart with aggregated venue data, axis labels, grid lines, and bubbles.
+ */
 function renderChart() {
     const venueData = d3.group(filterData(), d => `${d["e.venue"]}__${d["e.city"]}`);
 
@@ -147,14 +159,29 @@ function renderChart() {
 
 }
 
+/**
+ * Adds bubble chart and brush functionality for the scatter plot.
+ *
+ * @param {Array} aggrData - The aggregated data for the exhibition, venue, and artist statistics.
+ * @param {Object} scatter - The D3 scatter plot element.
+ * @param {Object} rangeX - The D3 x-axis scale for positioning the bubbles.
+ * @param {Object} rangeY - The D3 y-axis scale for positioning the bubbles.
+ * @param {Object} yAxis - The D3 y-axis element for the scatter plot.
+ * @param {Object} bubbleColor - A D3 color scale for filling the bubbles based on country.
+ * @param {number} maxPaintings - The maximum number of paintings for scaling.
+ */
 function addBubblesAndBrush(aggrData, scatter, rangeX, rangeY, yAxis, bubbleColor, maxPaintings) {
 
-    // BRUSH
     var brush = d3.brushY()
         .extent([[0, 0], [chart_width, chart_height]])  // brush area: whole graph area
         .on("end", function (event) {
             updateScatterChart(event, scatter, brush, maxPaintings, rangeX, rangeY, yAxis)
         });
+
+    scatter
+        .append("g")
+        .attr("class", "brush")
+        .call(brush);
 
     const exhibitionCityVenueMap = d3.group(aggrData, d => `${d.exhibitionIds.join(",")}-${d.vcCountry}`);
 
@@ -165,12 +192,6 @@ function addBubblesAndBrush(aggrData, scatter, rangeX, rangeY, yAxis, bubbleColo
     // Sort the data based on radius in descending order
     const sortedData = aggrData.sort((a, b) => radiusBubbleScale(b.totalArtists) - radiusBubbleScale(a.totalArtists));
 
-    scatter
-        .append("g")
-        .attr("class", "brush")
-        .call(brush);
-
-    // VENUE BUBBLES
     scatter
         .selectAll("circle")
         .data(sortedData)
@@ -191,6 +212,12 @@ function addBubblesAndBrush(aggrData, scatter, rangeX, rangeY, yAxis, bubbleColo
         });
 }
 
+/**
+ * Aggregates venue data and computes exhibition and artist statistics.
+ *
+ * @param {Map} venueData - A map with keys as "venue__city" and values as an array of exhibition records.
+ * @returns {Array} An array of aggregated data objects containing exhibition and artist statistics.
+ */
 function getAggregatedData(venueData) {
 
     return Array.from(venueData, ([key, records]) => {
@@ -218,10 +245,23 @@ function getAggregatedData(venueData) {
     });
 }
 
+/**
+ * Updates the scatter plot's Y-axis domain and transitions the circles based on brush selection.
+ *
+ * @param {Event} event - The event triggered by brushing.
+ * @param {Object} scatter - The D3 scatter chart element.
+ * @param {Object} brush - The D3 brush element.
+ * @param {number} maxPaintings - The maximum number of paintings for Y-axis scaling.
+ * @param {Object} x - The D3 x-axis scale.
+ * @param {Object} y - The D3 y-axis scale.
+ * @param {Object} yAxis - The D3 y-axis element for transition.
+ */
 function updateScatterChart(event, scatter, brush, maxPaintings, x, y, yAxis) {
 
     let extent = event.selection;
 
+    // If an extent is selected, update the Y axis domain.
+    // If no selection, back to initial coordinate.
     if (!extent) {
         if (!idleTimeout) return (idleTimeout = setTimeout(idled, 350));
         y.domain([0, maxPaintings]);
@@ -247,6 +287,13 @@ function updateScatterChart(event, scatter, brush, maxPaintings, x, y, yAxis) {
         .attr("cx", d => x(d.vcCountry) + x.bandwidth() / 2);
 }
 
+/**
+ * Renders the X-axis labels and circles representing countries.
+ *
+ * @param {Object} svgBubbleChart - The D3 SVG element for the bubble chart.
+ * @param {Object} x - The D3 x-axis scale.
+ * @param {Array} countries - Array of country names for X-axis labels.
+ */
 function renderXAxisLabels(svgBubbleChart, x, countries) {
 
     // X AXIS: Labels
@@ -284,6 +331,11 @@ function renderXAxisLabels(svgBubbleChart, x, countries) {
         .attr("opacity", 0.7);
 }
 
+/**
+ * Renders the Y-axis label for the bubble chart.
+ *
+ * @param {Object} svgBubbleChart - The D3 SVG element for the bubble chart.
+ */
 function renderYAxisLabels(svgBubbleChart) {
 
     // Y AXIS: Label
@@ -296,6 +348,14 @@ function renderYAxisLabels(svgBubbleChart) {
         .text("Paintings");
 }
 
+/**
+ * Renders the grid lines for both X and Y axes on the bubble chart.
+ *
+ * @param {Object} svgBubbleChart - The D3 SVG element for the bubble chart.
+ * @param {Object} scatter - The D3 scatter chart element.
+ * @param {Object} x - The D3 x-axis scale.
+ * @param {Object} y - The D3 y-axis scale.
+ */
 function renderGridLines(svgBubbleChart, scatter, x, y) {
 
     // X AXIS GRID LINES
@@ -319,6 +379,13 @@ function renderGridLines(svgBubbleChart, scatter, x, y) {
         );
 }
 
+/**
+ * Displays the tooltip with venue and exhibition details.
+ *
+ * @param {Event} event - The mouse event triggered by hovering over a bubble.
+ * @param {Object} d - The data for the selected venue.
+ * @param {Map} exhibitionCityVenueMap - A map linking exhibition details to venues.
+ */
 var showTooltip = function (event, d, exhibitionCityVenueMap) {
     const {venueDetails, tableHtml} = getTooltipTable(d, exhibitionCityVenueMap);
     venuesTooltip
@@ -331,6 +398,9 @@ var showTooltip = function (event, d, exhibitionCityVenueMap) {
         .style("top", (event.pageY + 15) + "px");
 };
 
+/**
+ * Hides the tooltip when the mouse leaves a bubble.
+ */
 var hideTooltip = function () {
     venuesTooltip
         .transition()
@@ -338,6 +408,20 @@ var hideTooltip = function () {
         .style("opacity", 0);
 };
 
+/**
+ * Generates a tooltip table with venue and location details based on exhibition data.
+ *
+ * The function handles the following cases:
+ * 1. Single venue
+ * 2. Multiple venues: Same name, different cities
+ * 3. Multiple venues: Different names, same city
+ * 4. Multiple venues: Same / different names and cities
+ * 5. Multiple unique venues with the same number of paintings and artists
+ *
+ * @param {Object} d - The data for the selected venue.
+ * @param {Map} exhibitionCityVenueMap - A map linking exhibition details to venues.
+ * @returns {Object} - An object with venue and table details for the tooltip.
+ */
 function getTooltipTable(d, exhibitionCityVenueMap) {
     const keyExCo = `${d.exhibitionIds.join(",")}-${d.vcCountry}`;
 
@@ -386,7 +470,7 @@ function getTooltipTable(d, exhibitionCityVenueMap) {
             .join("");
 
     } else {
-        venueDetails = `Sonderfall<br>Venues:<br>${uniqueVenues.map((v, i) => `(${i + 1}) <strong>${v}</strong>`).join("<br>")}`;
+        venueDetails = `<br>Venues:<br>${uniqueVenues.map((v, i) => `(${i + 1}) <strong>${v}</strong>`).join("<br>")}`;
         locationDetails = uniqueCities.map((city, i) => formatTableRow(`Location (${i + 1})`, `${city}, ${d.vcCountry}`)).join("");
     }
 
@@ -399,6 +483,9 @@ function getTooltipTable(d, exhibitionCityVenueMap) {
     return {venueDetails, tableHtml};
 }
 
+/**
+ * Adds a legend to the bubble chart with circles representing the number of artists per venue.
+ */
 function addLegend() {
 
     d3.select("#venue_legendID").remove();
