@@ -1,13 +1,14 @@
-let width = 800;
-let height = 200;
-let margin = { top: 20, right: 30, bottom: 50, left: 70 };
+let barChart_margin = { top: 20, right: 30, bottom: 50, left: 70 };
+let barChart_width = document.querySelector(".bar-chart-container").clientWidth - barChart_margin.left - barChart_margin.right;
+let barChart_height = 200;
+
 
 let svg = d3.select("#bar-chart")
   .append("svg")
-  .attr("width", width + margin.left + margin.right)
-  .attr("height", height + margin.top + margin.bottom)
+  .attr("width", barChart_width + barChart_margin.left + barChart_margin.right)
+  .attr("height", barChart_height + barChart_margin.top + barChart_margin.bottom)
   .append("g")
-  .attr("transform", `translate(${margin.left},${margin.top})`);
+  .attr("transform", `translate(${barChart_margin.left},${barChart_margin.top})`);
 
 
 // filter options
@@ -65,38 +66,36 @@ d3.dsv(",", "../../data/processed_data.csv")
     yScale.domain([0, d3.max(data, d => Math.max(d.male, d.female))]).nice();
 
     svg.append("g")
-      .attr("transform", `translate(0,${height})`)
+      .attr("transform", `translate(0,${barChart_height})`)
       .call(d3.axisBottom(xScale));
 
     svg.append("g")
       .call(d3.axisLeft(yScale));
 
     svg.append("text")
-      .attr("x", width / 2)
-      .attr("y", height + margin.bottom - 10)
+      .attr("x", barChart_width / 2)
+      .attr("y", barChart_height + barChart_margin.bottom - 10)
       .attr("text-anchor", "middle")
-      .style("font-size", "12px")
-      .style("font-family", "Arial")
+      .style("font-size", "14px")
       .text("Year");
 
     svg.append("text")
-      .attr("x", -height / 2)
-      .attr("y", -margin.left + 20)
+      .attr("x", -barChart_height / 2)
+      .attr("y", -barChart_margin.left + 20)
       .attr("transform", "rotate(-90)")
       .attr("text-anchor", "middle")
-      .style("font-size", "12px")
-      .style("font-family", "Arial")
+      .style("font-size", "14px")
       .text("Number of Exhibitions");
 
     updateBarChart();
   });
 
 const xScale = d3.scaleBand()
-  .range([0, width])
+  .range([0, barChart_width])
   .padding(0.1);
 
 const yScale = d3.scaleLinear()
-  .range([height, 0]);
+  .range([barChart_height, 0]);
 
 
 // Call the function after creating the axis
@@ -126,7 +125,7 @@ function updateBarChart() {
     .attr("x", 0)
     .attr("y", d => yScale(d.male))
     .attr("width", xScale.bandwidth() / 3)
-    .attr("height", d => height - yScale(d.male))
+    .attr("height", d => barChart_height - yScale(d.male))
     .attr("fill", "#1e81b0")
     .on("mouseover", (event, d) => {
       barTooltip.style("visibility", "visible")
@@ -148,7 +147,7 @@ function updateBarChart() {
     .attr("x", xScale.bandwidth() / 3)
     .attr("y", d => yScale(d.female))
     .attr("width", xScale.bandwidth() / 3)
-    .attr("height", d => height - yScale(d.female))
+    .attr("height", d => barChart_height - yScale(d.female))
     .attr("fill", "#f1a7c1")
     .on("mouseover", (event, d) => {
       barTooltip.style("visibility", "visible")
@@ -194,7 +193,7 @@ function addHorizontalGridlines() {
         .enter()
         .append("line")
         .attr("x1", 0)
-        .attr("x2", width)
+        .attr("x2", barChart_width)
         .attr("y1", d => yScale(d))
         .attr("y2", d => yScale(d))
         .attr("stroke", "#ccc")
